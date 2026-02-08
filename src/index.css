@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NEXERA Design System - Valorant/Esports Theme */
+
+@layer base {
+  :root {
+    /* Core Colors - Pure black & white with accent */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    
+    /* Accent - #EF4524 in HSL */
+    --accent: 10 86% 54%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Card surfaces */
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    
+    /* Primary uses accent */
+    --primary: 10 86% 54%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - dark surfaces */
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Muted */
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    
+    /* Borders */
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 10 86% 54%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --radius: 0.125rem;
+    
+    /* HUD specific */
+    --hud-glow: 0 0 20px hsl(10 86% 54% / 0.5);
+    --hud-border: 0 0% 25%;
+    --scanline-opacity: 0.03;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    @apply uppercase tracking-wider font-bold;
+  }
+  
+  /* Selection color */
+  ::selection {
+    background: hsl(var(--accent) / 0.3);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  /* HUD Border style */
+  .hud-border {
+    @apply border border-border relative;
+    box-shadow: inset 0 0 20px rgba(239, 69, 36, 0.05);
+  }
+  
+  .hud-border::before,
+  .hud-border::after {
+    content: '';
+    @apply absolute w-3 h-3 border-accent;
+  }
+  
+  .hud-border::before {
+    @apply top-0 left-0 border-t-2 border-l-2;
+  }
+  
+  .hud-border::after {
+    @apply bottom-0 right-0 border-b-2 border-r-2;
+  }
+  
+  /* Accent border glow on hover */
+  .hud-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hud-glow:hover {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.4), 
+                inset 0 0 20px hsl(var(--accent) / 0.1);
+    @apply border-accent;
+  }
+  
+  /* Tactical button styles */
+  .btn-tactical {
+    @apply relative uppercase font-bold tracking-widest px-8 py-4 
+           bg-transparent border-2 border-accent text-accent
+           transition-all duration-300 overflow-hidden;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  
+  .btn-tactical::before {
+    content: '';
+    @apply absolute inset-0 bg-accent transform -translate-x-full transition-transform duration-300;
+  }
+  
+  .btn-tactical:hover::before {
+    @apply translate-x-0;
+  }
+  
+  .btn-tactical:hover {
+    @apply text-background;
+  }
+  
+  .btn-tactical span {
+    @apply relative z-10;
+  }
+  
+  /* Primary filled button */
+  .btn-primary {
+    @apply relative uppercase font-bold tracking-widest px-8 py-4 
+           bg-accent border-2 border-accent text-background
+           transition-all duration-300;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 0 30px hsl(var(--accent) / 0.6);
+  }
+  
+  /* Scanline overlay effect */
+  .scanlines {
+    @apply pointer-events-none fixed inset-0 z-50;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03),
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  }
+  
+  /* Grid overlay */
+  .grid-overlay {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  /* Animated border tick marks */
+  .tick-marks {
+    @apply relative;
+  }
+  
+  .tick-marks::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-0.5 bg-accent;
+    animation: tick-scan 3s ease-in-out infinite;
+  }
+  
+  /* Section divider */
+  .section-divider {
+    @apply relative h-px bg-border my-20;
+  }
+  
+  .section-divider::before {
+    content: '';
+    @apply absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 
+           w-4 h-4 bg-accent rotate-45;
+  }
+  
+  /* Text styles */
+  .text-tactical {
+    font-family: 'Orbitron', sans-serif;
+    @apply uppercase tracking-widest;
+  }
+  
+  .text-hud {
+    font-family: 'Rajdhani', sans-serif;
+    @apply font-semibold tracking-wide;
+  }
+  
+  /* Glitch text effect */
+  .glitch {
+    @apply relative;
+  }
+  
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+  
+  .glitch::before {
+    @apply text-accent;
+    animation: glitch-1 2s infinite linear alternate-reverse;
+  }
+  
+  .glitch::after {
+    @apply text-foreground;
+    animation: glitch-2 3s infinite linear alternate-reverse;
+  }
+  
+  /* Card hover tilt effect applied via JS */
+  .card-tilt {
+    @apply transition-transform duration-200;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  /* Nav link style */
+  .nav-link {
+    @apply relative uppercase tracking-widest text-sm font-semibold 
+           text-muted-foreground hover:text-foreground transition-colors duration-300;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300;
+  }
+  
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+  
+  .nav-link.active {
+    @apply text-accent;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted rounded-none;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent;
+  }
+  
+  /* Hide scrollbar but allow scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Keyframe animations */
+@keyframes tick-scan {
+  0%, 100% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  51% {
+    transform-origin: right;
+  }
+}
+
+@keyframes glitch-1 {
+  0% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+  20% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -2px); }
+  40% { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+  60% { clip-path: inset(80% 0 0 0); transform: translate(2px, 2px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, -2px); }
+  100% { clip-path: inset(30% 0 50% 0); transform: translate(0, 2px); }
+}
+
+@keyframes glitch-2 {
+  0% { clip-path: inset(70% 0 10% 0); transform: translate(2px, -2px); }
+  20% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(30% 0 50% 0); transform: translate(2px, 0); }
+  60% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, -2px); }
+  80% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 2px); }
+  100% { clip-path: inset(70% 0 10% 0); transform: translate(0, -2px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--accent) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--accent) / 0.6); }
+}
+
+@keyframes border-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
