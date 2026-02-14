@@ -10,18 +10,19 @@ import GridBackground from "@/components/GridBackground";
 
 const Index = () => {
   return (
-    <PageTransition>
-      <GridBackground />
-      <Navbar />
-      <main className="relative z-10">
-        <HeroSection />
-        <VisionSection />
-        <HUDPanelSection />
-        <ImmersiveSection />
-        <CTASection />
-      </main>
-      <Footer />
-    </PageTransition>
+  <PageTransition>
+  <GridBackground />
+  <Navbar />
+  <main className="relative z-10">
+    <HeroSection />
+    <VisionSection />
+    <HUDPanelSection />
+    <ImmersiveSection />
+    <CTASection />
+  </main>
+  <Footer />
+</PageTransition>
+    
   );
 };
 
