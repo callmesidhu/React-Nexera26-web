@@ -16,12 +16,27 @@ const VisionSection = () => {
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          end: "bottom 60%",
-          scrub: true,
+          trigger: ".vision-title-1",
+          start: "top 60%",
+          toggleActions: "play none none none",
         },
       });
+
+      tl.to(".vision-letter", {
+        opacity: 1,
+        stagger: 0.04,
+        duration: 0.6,
+        ease: "power2.out",
+      }).to(
+        ".vision-letter-2",
+        {
+          opacity: 1,
+          stagger: 0.04,
+          duration: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      );
 
       tl.to(".vision-letter", {
         opacity: 1,
