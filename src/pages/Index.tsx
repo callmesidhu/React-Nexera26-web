@@ -8,23 +8,30 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import GridBackground from "@/components/GridBackground";
 import HorizontalScrollSection from "@/components/HorizontalScrollSection";
+import CountdownReveal from "@/components/CountdownReveal";
 
 const Index = () => {
   return (
-  <PageTransition>
-  <GridBackground />
-  <Navbar />
-  <main className="relative z-10">
-    <HeroSection />
-    <VisionSection />
-    <HorizontalScrollSection />
-    <HUDPanelSection />
-    <ImmersiveSection />
-    <CTASection />
-  </main>
-  <Footer />
-</PageTransition>
-    
+    <PageTransition>
+      <GridBackground />
+      <Navbar />
+      <main className="relative z-10 overflow-clip bg-background">
+        <HeroSection />
+        <VisionSection />
+        <HorizontalScrollSection />
+        <div className="relative w-full">
+          <div className="sticky top-0 z-0 w-full h-screen overflow-hidden flex flex-col justify-center bg-background">
+            <HUDPanelSection />
+          </div>
+          <div className="relative z-10 bg-background shadow-[0_-30px_60px_rgba(0,0,0,0.9)]">
+            <CountdownReveal />
+          </div> 
+        </div>
+        {/* <ImmersiveSection /> */}
+        <CTASection />
+      </main>
+      <Footer />
+    </PageTransition>
   );
 };
 
