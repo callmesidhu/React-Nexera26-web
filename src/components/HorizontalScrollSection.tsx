@@ -5,43 +5,44 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HorizontalScrollSection() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const worldRef = useRef<HTMLDivElement | null>(null);
+  const bgRef = useRef<HTMLDivElement | null>(null);
+  const mobileBgRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const section = sectionRef.current;
+    const section = scrollRef.current;
     const world = worldRef.current;
-    if (!section || !world) return;
+    const bg = bgRef.current;
+    const mobileBg = mobileBgRef.current;
 
-    // 📱 MOBILE FALLBACK
-    if (window.innerWidth < 768) {
-      world.style.overflowX = "auto";
-      world.style.display = "flex";
-      world.style.gap = "24px";
-      return;
-    }
+    if (!section || !world || !bg) return;
 
-    const totalWidth = world.scrollWidth;
-    const viewportWidth = window.innerWidth;
+    const mm = gsap.matchMedia();
 
-    // 🏎️ MAIN HORIZONTAL SCROLL
-    const tween = gsap.to(world, {
-      x: -(totalWidth - viewportWidth),
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: `+=${totalWidth}`,
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
-    });
+    // =========================
+    // DESKTOP ONLY (>= 768px)
+    // =========================
+    mm.add("(min-width: 768px)", () => {
+      const totalWidth = world.scrollWidth;
+      const viewportWidth = window.innerWidth;
 
-    // 🔥 PARALLAX DEPTH
-    gsap.utils.toArray<HTMLElement>(".near").forEach((el) => {
-      gsap.to(el, {
-        xPercent: -35,
+      const tween = gsap.to(world, {
+        x: -(totalWidth - viewportWidth),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: `+=${totalWidth}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+
+      gsap.to(bg, {
+        x: -(totalWidth - viewportWidth) * 0.15,
+        ease: "none",
         scrollTrigger: {
           trigger: section,
           start: "top top",
@@ -49,171 +50,352 @@ export default function HorizontalScrollSection() {
           scrub: true,
         },
       });
-    });
 
-    gsap.utils.toArray<HTMLElement>(".far").forEach((el) => {
-      gsap.to(el, {
-        xPercent: -12,
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${totalWidth}`,
-          scrub: true,
-        },
-      });
-    });
-
-    // ✨ LETTER-BY-LETTER TEXT REVEAL
-    gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((el) => {
-      const text = el.innerText;
-
-      el.innerHTML = text
-        .split("")
-        .map((char) =>
-          char === " "
-            ? " "
-            : `<span class="char inline-block opacity-0 translate-y-6">${char}</span>`
-        )
-        .join("");
-
-      const chars = el.querySelectorAll(".char");
-
-      gsap.to(chars, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.035,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "left center",
-          containerAnimation: tween,
-        },
+      gsap.utils.toArray<HTMLElement>(".near").forEach((el) => {
+        gsap.to(el, {
+          xPercent: -35,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${totalWidth}`,
+            scrub: true,
+          },
+        });
       });
 
-      // 🔥 Glow pulse after reveal
-      gsap.fromTo(
-        el,
-        { textShadow: "0 0 0px rgba(239,69,36,0)" },
-        {
-          textShadow: "0 0 20px rgba(239,69,36,0.8)",
-          duration: 1,
+      gsap.utils.toArray<HTMLElement>(".far").forEach((el) => {
+        gsap.to(el, {
+          xPercent: -12,
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${totalWidth}`,
+            scrub: true,
+          },
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((el) => {
+        const text = el.innerText.trim(); 
+
+        el.innerHTML = text
+          .split(" ")
+          .map((word) => {
+            const chars = word
+              .split("")
+              .map(
+                (char) =>
+                  `<span class="char inline-block opacity-0 translate-y-6">${char}</span>`
+              )
+              .join("");
+            return `<span class="inline-block whitespace-nowrap">${chars}</span>`;
+          })
+          .join(" ");
+
+        const chars = el.querySelectorAll(".char");
+
+        gsap.to(chars, {
+          opacity: 1,
+          y: 0,
+          stagger: 0.035,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: el,
-            start: "left center",
+            start: "left 80%",
             containerAnimation: tween,
           },
-        }
-      );
+        });
+      });
+
+      return () => {
+        tween.kill();
+      };
+    });
+
+    // =========================
+    // MOBILE ONLY (< 768px)
+    // =========================
+    mm.add("(max-width: 767px)", () => {
+      if (mobileBg) {
+        gsap.to(mobileBg, {
+          y: (self: any) => -self.getBoundingClientRect().height * 0.3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        });
+      }
+
+      gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((el) => {
+        const text = el.innerText.trim();
+
+        el.innerHTML = text
+          .split(" ")
+          .map((word) => {
+            const chars = word
+              .split("")
+              .map(
+                (char) =>
+                  `<span class="char inline-block opacity-100 translate-y-0">${char}</span>`
+              )
+              .join("");
+            return `<span class="inline-block whitespace-nowrap">${chars}</span>`;
+          })
+          .join(" ");
+      });
+
+      gsap.utils.toArray<HTMLElement>(".reveal-text").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+
+      return () => {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      };
     });
 
     return () => {
-      tween.kill();
+      mm.revert();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
-
     <section
-      ref={sectionRef}
-      className="relative bg-background overflow-hidden"
-      style={{ height: "100vh" }}
+      ref={scrollRef}
+      className="relative bg-background overflow-hidden md:h-screen"
     >
-      {/* 🌌 DENSE HORIZONTAL CANVAS */}
+      {/* Background Grid (Desktop Only) */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 pointer-events-none z-0 hidden md:block"
+        style={{
+          width: "600vw",
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Content World */}
       <div
         ref={worldRef}
-        className="relative h-full"
-        style={{ width: "320vw" }}
+        className="
+          relative z-10
+          flex flex-col md:flex
+          w-full md:w-[320vw]
+          h-auto md:h-full
+          gap-0 md:gap-0
+          px-0 md:px-0
+          py-0 md:py-0
+        "
       >
-        {/* ===== LEFT CLUSTER ===== */}
-        <img
-          src="https://picsum.photos/900/1100?1"
-          className="absolute near rounded-xl shadow-2xl"
-          style={{ left: "40vw", top: "15vh", width: "24vw" }}
-        />
-
-        <img
-          src="https://picsum.photos/600/800?2"
-          className="absolute far opacity-70 rounded-lg"
-          style={{ left: "55vw", top: "55vh", width: "14vw" }}
-        />
-
-        <div
-          className="absolute far max-w-sm"
-          style={{ left: "70vw", top: "18vh" }}
-        >
-          <h2 className="reveal-text text-5xl text-accent mb-4">
-            INNOVATION
-          </h2>
-          <p className="text-muted-foreground">
-            Transforming industrial engineering through
-            precision technology.
-          </p>
+        {/* ========================================================= */}
+        {/* SECTION 1: LEFT IMAGE + RIGHT TEXT                        */}
+        {/* ========================================================= */}
+        
+        {/* Desktop */}
+        <div className="hidden md:block absolute near w-[24vw]" style={{ left: "40vw", top: "15vh" }}>
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+            <img
+              src="https://picsum.photos/900/1100?1"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              alt="Innovation"
+            />
+          </div>
+        </div>
+        
+        <div className="hidden md:block absolute far" style={{ left: "70vw", top: "18vh" }}>
+          <div className="w-[20vw]">
+            <h2 className="reveal-text text-5xl text-accent mb-4 whitespace-nowrap">
+              INNOVATION
+            </h2>
+            <p className="text-muted-foreground">
+              Transforming industrial engineering through precision technology.
+            </p>
+          </div>
         </div>
 
-        {/* ===== CENTER HERO ===== */}
-        <img
-          src="https://picsum.photos/1200/900?3"
-          className="absolute near rounded-xl shadow-2xl"
-          style={{ left: "110vw", top: "20vh", width: "34vw" }}
-        />
-
-        <img
-          src="https://picsum.photos/500/700?4"
-          className="absolute far grayscale rounded-lg"
-          style={{ left: "130vw", top: "60vh", width: "12vw" }}
-        />
-
-        <img
-          src="https://picsum.photos/700/900?5"
-          className="absolute far opacity-80 rounded-lg"
-          style={{ left: "150vw", top: "10vh", width: "16vw" }}
-        />
-
-        {/* ===== MAIN TEXT BLOCK ===== */}
-        <div
-          className="absolute near max-w-lg"
-          style={{ left: "175vw", top: "35vh" }}
-        >
-          <h2 className="reveal-text text-6xl text-accent mb-6">
-            NEXERA
-          </h2>
-          <p className="text-muted-foreground text-lg">
-            A platform where engineering excellence meets
-            real-world innovation challenges.
-          </p>
+        {/* Mobile: Staggered Left */}
+        <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
+            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+              <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
+                <img
+                  src="https://picsum.photos/900/1100?1"
+                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  alt="Innovation"
+                />
+              </div>
+            </div>
+            <div className="col-span-1 flex flex-col justify-start pt-2 sm:pt-4">
+              <h2 className="reveal-text text-base sm:text-xl font-bold text-accent mb-1 sm:mb-2 no-word-break">
+                INNOVATION
+              </h2>
+              <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
+                Transforming industrial engineering through precision technology.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* ===== RIGHT CLUSTER ===== */}
-        <img
-          src="https://picsum.photos/900/1200?6"
-          className="absolute near rounded-xl shadow-2xl"
-          style={{ left: "210vw", top: "18vh", width: "26vw" }}
-        />
+        {/* ========================================================= */}
+        {/* SECTION 2: RIGHT IMAGE + LEFT TEXT                        */}
+        {/* ========================================================= */}
+        
+        {/* Desktop */}
+        <div className="hidden md:block absolute near w-[34vw]" style={{ left: "110vw", top: "20vh" }}>
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+            <img
+              src="https://picsum.photos/1200/900?3"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              alt="Nexera Platform"
+            />
+          </div>
+        </div>
 
-        <img
-          src="https://picsum.photos/600/800?7"
-          className="absolute far rounded-lg"
-          style={{ left: "230vw", top: "58vh", width: "14vw" }}
-        />
+        {/* Grayscale image that awakens to full color */}
+        <div className="hidden md:block absolute far w-[12vw]" style={{ left: "130vw", top: "60vh" }}>
+          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+            <img
+              src="https://picsum.photos/500/700?4"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 filter brightness-75 group-hover:brightness-110"
+              alt="Detail"
+            />
+          </div>
+        </div>
 
-        <img
-          src="https://picsum.photos/500/700?8"
-          className="absolute far opacity-70 rounded-lg"
-          style={{ left: "250vw", top: "12vh", width: "12vw" }}
-        />
+        {/* Faded image that comes into full focus */}
+        <div className="hidden md:block absolute far w-[16vw]" style={{ left: "150vw", top: "10vh" }}>
+          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+            <img
+              src="https://picsum.photos/700/900?5"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100 filter brightness-75 group-hover:brightness-110"
+              alt="Detail"
+            />
+          </div>
+        </div>
 
-        {/* ===== FINAL MESSAGE ===== */}
-        <div
-          className="absolute far text-right max-w-md"
-          style={{ left: "275vw", top: "30vh" }}
-        >
-          <h2 className="reveal-text text-5xl text-accent mb-4">
-            BUILD THE FUTURE
-          </h2>
-          <p className="text-muted-foreground">
-            Where ideas turn into impact.
-          </p>
+        <div className="hidden md:block absolute near" style={{ left: "175vw", top: "35vh" }}>
+          <div className="max-w-lg">
+            <h2 className="reveal-text text-6xl text-accent mb-6 whitespace-nowrap">
+              NEXERA
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              A platform where engineering excellence meets real-world innovation challenges.
+            </p>
+          </div>
+        </div>
+
+        {/* Mobile: Staggered Right */}
+        <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
+            <div className="col-span-1 flex flex-col justify-start pt-2 sm:pt-4">
+              <h2 className="reveal-text text-base sm:text-xl font-bold text-accent mb-1 sm:mb-2 no-word-break">
+                NEXERA
+              </h2>
+              <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
+                A platform where engineering excellence meets real-world innovation challenges.
+              </p>
+            </div>
+            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+              <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
+                <img
+                  src="https://picsum.photos/1200/900?3"
+                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  alt="Nexera Platform"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* SECTION 3: LEFT IMAGE + RIGHT TEXT                        */}
+        {/* ========================================================= */}
+        
+        {/* Desktop */}
+        <div className="hidden md:block absolute near w-[26vw]" style={{ left: "210vw", top: "18vh" }}>
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+            <img
+              src="https://picsum.photos/900/1200?6"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              alt="Build the Future"
+            />
+          </div>
+        </div>
+
+        <div className="hidden md:block absolute far w-[14vw]" style={{ left: "230vw", top: "58vh" }}>
+          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+            <img
+              src="https://picsum.photos/600/800?7"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-80 group-hover:brightness-110"
+              alt="Impact Detail"
+            />
+          </div>
+        </div>
+
+        {/* Faded image that comes into full focus */}
+        <div className="hidden md:block absolute far w-[12vw]" style={{ left: "250vw", top: "12vh" }}>
+          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+            <img
+              src="https://picsum.photos/500/700?8"
+              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100 filter brightness-80 group-hover:brightness-110"
+              alt="Impact Detail"
+            />
+          </div>
+        </div>
+
+        <div className="hidden md:block absolute far" style={{ left: "275vw", top: "30vh" }}>
+          <div className="max-w-md text-right">
+            <h2 className="reveal-text text-5xl text-accent mb-4 whitespace-nowrap">
+              BUILD THE FUTURE
+            </h2>
+            <p className="text-muted-foreground">
+              Where ideas turn into impact.
+            </p>
+          </div>
+        </div>
+
+        {/* Mobile: Staggered Left */}
+        <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
+            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+              <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
+                <img
+                  src="https://picsum.photos/900/1200?6"
+                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  alt="Build the Future"
+                />
+              </div>
+            </div>
+            <div className="col-span-1 flex flex-col justify-start pt-2 sm:pt-4">
+              <h2 className="reveal-text text-base sm:text-xl font-bold text-accent mb-1 sm:mb-2 no-word-break">
+                BUILD THE FUTURE
+              </h2>
+              <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
+                Where ideas turn into impact.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
