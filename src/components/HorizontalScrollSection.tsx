@@ -214,10 +214,10 @@ export default function HorizontalScrollSection() {
         
         {/* Desktop */}
         <div className="hidden md:block absolute near w-[24vw]" style={{ left: "40vw", top: "15vh" }}>
-          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
               src="https://picsum.photos/900/1100?1"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              className="w-full h-auto object-cover"
               alt="Innovation"
             />
           </div>
@@ -241,7 +241,7 @@ export default function HorizontalScrollSection() {
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
                   src="https://picsum.photos/900/1100?1"
-                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  className="w-full h-full object-cover"
                   alt="Innovation"
                 />
               </div>
@@ -263,32 +263,32 @@ export default function HorizontalScrollSection() {
         
         {/* Desktop */}
         <div className="hidden md:block absolute near w-[34vw]" style={{ left: "110vw", top: "20vh" }}>
-          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
               src="https://picsum.photos/1200/900?3"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              className="w-full h-auto object-cover"
               alt="Nexera Platform"
             />
           </div>
         </div>
 
-        {/* Grayscale image that awakens to full color */}
+        {/* Grayscale image */}
         <div className="hidden md:block absolute far w-[12vw]" style={{ left: "130vw", top: "60vh" }}>
-          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+          <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
               src="https://picsum.photos/500/700?4"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 filter brightness-75 group-hover:brightness-110"
+              className="w-full h-auto object-cover grayscale"
               alt="Detail"
             />
           </div>
         </div>
 
-        {/* Faded image that comes into full focus */}
+        {/* Faded image */}
         <div className="hidden md:block absolute far w-[16vw]" style={{ left: "150vw", top: "10vh" }}>
-          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+          <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
               src="https://picsum.photos/700/900?5"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100 filter brightness-75 group-hover:brightness-110"
+              className="w-full h-auto object-cover opacity-70"
               alt="Detail"
             />
           </div>
@@ -320,7 +320,7 @@ export default function HorizontalScrollSection() {
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
                   src="https://picsum.photos/1200/900?3"
-                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  className="w-full h-full object-cover"
                   alt="Nexera Platform"
                 />
               </div>
@@ -334,31 +334,31 @@ export default function HorizontalScrollSection() {
         
         {/* Desktop */}
         <div className="hidden md:block absolute near w-[26vw]" style={{ left: "210vw", top: "18vh" }}>
-          <div className="w-full overflow-hidden rounded-xl shadow-2xl group">
+          <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
               src="https://picsum.photos/900/1200?6"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+              className="w-full h-auto object-cover"
               alt="Build the Future"
             />
           </div>
         </div>
 
         <div className="hidden md:block absolute far w-[14vw]" style={{ left: "230vw", top: "58vh" }}>
-          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+          <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
               src="https://picsum.photos/600/800?7"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 filter brightness-80 group-hover:brightness-110"
+              className="w-full h-auto object-cover"
               alt="Impact Detail"
             />
           </div>
         </div>
 
-        {/* Faded image that comes into full focus */}
+        {/* Faded image */}
         <div className="hidden md:block absolute far w-[12vw]" style={{ left: "250vw", top: "12vh" }}>
-          <div className="w-full overflow-hidden rounded-lg shadow-xl group">
+          <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
               src="https://picsum.photos/500/700?8"
-              className="w-full h-auto object-cover transition-all duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100 filter brightness-80 group-hover:brightness-110"
+              className="w-full h-auto object-cover opacity-70"
               alt="Impact Detail"
             />
           </div>
@@ -382,7 +382,7 @@ export default function HorizontalScrollSection() {
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
                   src="https://picsum.photos/900/1200?6"
-                  className="w-full h-full object-cover transition-all duration-700 hover:scale-110 filter brightness-90 hover:brightness-110"
+                  className="w-full h-full object-cover"
                   alt="Build the Future"
                 />
               </div>
