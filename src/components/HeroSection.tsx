@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import ThreeScene from "./ThreeScene";
@@ -7,6 +7,13 @@ import ThreeScene from "./ThreeScene";
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const { scrollY } = useScroll();
+
+  // Depth mapping (tuned for cinematic feel)
+  const bgY = useTransform(scrollY, [0, 1000], [0, 200]);
+  const hudY = useTransform(scrollY, [0, 1000], [0, 350]);
+  const contentY = useTransform(scrollY, [0, 1000], [0, 500]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -30,30 +37,45 @@ const HeroSection = () => {
   const title = "NEXERA";
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Three.js Background */}
-      <ThreeScene />
-      
+    <section
+      ref={containerRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Background Layer (Slowest) */}
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute inset-0 -z-10 will-change-transform"
+      >
+        <ThreeScene />
+      </motion.div>
+
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-background/50 z-[1]" />
-      
-      {/* HUD Corner decorations */}
-      <div className="absolute top-24 left-8 z-10 hidden md:block">
-        <div className="w-20 h-20 border-l-2 border-t-2 border-accent opacity-50" />
-      </div>
-      <div className="absolute top-24 right-8 z-10 hidden md:block">
-        <div className="w-20 h-20 border-r-2 border-t-2 border-accent opacity-50" />
-      </div>
-      <div className="absolute bottom-8 left-8 z-10 hidden md:block">
-        <div className="w-20 h-20 border-l-2 border-b-2 border-accent opacity-50" />
-      </div>
-      <div className="absolute bottom-8 right-8 z-10 hidden md:block">
-        <div className="w-20 h-20 border-r-2 border-b-2 border-accent opacity-50" />
-      </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-6">
-        {/* Subtitle */}
+      {/* HUD Decorations (Mid Depth) */}
+      <motion.div
+        style={{ y: hudY }}
+        className="absolute inset-0 z-10 will-change-transform"
+      >
+        <div className="absolute top-24 left-8 hidden md:block">
+          <div className="w-20 h-20 border-l-2 border-t-2 border-accent opacity-50" />
+        </div>
+        <div className="absolute top-24 right-8 hidden md:block">
+          <div className="w-20 h-20 border-r-2 border-t-2 border-accent opacity-50" />
+        </div>
+        <div className="absolute bottom-8 left-8 hidden md:block">
+          <div className="w-20 h-20 border-l-2 border-b-2 border-accent opacity-50" />
+        </div>
+        <div className="absolute bottom-8 right-8 hidden md:block">
+          <div className="w-20 h-20 border-r-2 border-b-2 border-accent opacity-50" />
+        </div>
+      </motion.div>
+
+      {/* Content Layer (Closest / Fastest) */}
+      <motion.div
+        style={{ y: contentY }}
+        className="relative z-20 text-center px-6 will-change-transform"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,11 +87,10 @@ const HeroSection = () => {
           </span>
         </motion.div>
 
-        {/* Main Title */}
-        <h1 
-          ref={titleRef}
-          className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black leading-none mb-6 overflow-hidden"
-        >
+          <h1
+            ref={titleRef}
+            className="font-display text-4xl sm:text-6xl md:text-9xl lg:text-[12rem] font-black leading-none mb-6 overflow-hidden whitespace-nowrap"
+          >
           {title.split("").map((letter, index) => (
             <span key={index} className="hero-letter inline-block">
               {letter}
@@ -77,7 +98,6 @@ const HeroSection = () => {
           ))}
         </h1>
 
-        {/* Tagline */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -87,7 +107,6 @@ const HeroSection = () => {
           Engineering the Future. One Innovation at a Time.
         </motion.p>
 
-        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -102,7 +121,6 @@ const HeroSection = () => {
           </Link>
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -110,15 +128,21 @@ const HeroSection = () => {
           className="absolute bottom-12 left-1/2 -translate-x-1/2"
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">Scroll</span>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">
+              Scroll
+            </span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
               className="w-px h-12 bg-gradient-to-b from-accent to-transparent"
             />
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };
