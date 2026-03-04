@@ -8,12 +8,14 @@ const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  const { scrollY } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
 
-  // Depth mapping (tuned for cinematic feel)
-  const bgY = useTransform(scrollY, [0, 1000], [0, 200]);
-  const hudY = useTransform(scrollY, [0, 1000], [0, 350]);
-  const contentY = useTransform(scrollY, [0, 1000], [0, 500]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const hudY = useTransform(scrollYProgress, [0, 1], [0, 350]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 500]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
