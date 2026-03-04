@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import GridBackground from "@/components/GridBackground";
 import HorizontalScrollSection from "@/components/HorizontalScrollSection";
 import CountdownReveal from "@/components/CountdownReveal";
+import Landing from "@/components/Landing";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <GridBackground />
       <Navbar />
       <main className="relative z-10 overflow-clip bg-background">
+        <Landing />
         <HeroSection />
         <VisionSection />
         <HorizontalScrollSection />
