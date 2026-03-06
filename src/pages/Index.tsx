@@ -22,7 +22,7 @@ const Index = () => {
         <VisionSection />
         <HorizontalScrollSection />
         <div className="relative w-full">
-          <div className="sticky top-0 z-0 w-full h-screen overflow-hidden flex flex-col justify-center bg-background">
+          <div className="sticky top-0 z-0 flex h-screen w-full flex-col justify-center overflow-hidden bg-background">
             <HUDPanelSection />
           </div>
           <div className="relative z-10 bg-background shadow-[0_-30px_60px_rgba(0,0,0,0.9)]">
