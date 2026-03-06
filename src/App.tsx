@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import Index from "./pages/Index";
 import Programs from "./pages/Programs";
 import Events from "./pages/Events";
@@ -16,36 +18,66 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-// Smooth scroll wrapper
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------------------------------------
+   Smooth Scroll Wrapper (Lenis + GSAP Sync)
+--------------------------------------- */
+
 const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
       smoothWheel: true,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Sync Lenis scroll with ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
 
-    requestAnimationFrame(raf);
+    // GSAP ticker drives Lenis
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    // 🔥 CRITICAL: scrollerProxy
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis.scrollTo(value);
+        }
+        return window.scrollY;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    ScrollTrigger.refresh();
 
     return () => {
       lenis.destroy();
+      ScrollTrigger.killAll();
     };
   }, []);
 
   return <>{children}</>;
 };
 
-// Animated routes wrapper
+/* ---------------------------------------
+   Animated Routes
+--------------------------------------- */
+
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -64,6 +96,10 @@ const AnimatedRoutes = () => {
     </AnimatePresence>
   );
 };
+
+/* ---------------------------------------
+   App Root
+--------------------------------------- */
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

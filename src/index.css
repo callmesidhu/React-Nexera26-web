@@ -8,52 +8,41 @@
 
 @layer base {
   :root {
-    /* Core Colors - Pure black & white with accent */
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
     
-    /* Accent - #EF4524 in HSL */
     --accent: 10 86% 54%;
     --accent-foreground: 0 0% 100%;
     
-    /* Card surfaces */
     --card: 0 0% 3%;
     --card-foreground: 0 0% 100%;
     
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 100%;
     
-    /* Primary uses accent */
     --primary: 10 86% 54%;
     --primary-foreground: 0 0% 100%;
     
-    /* Secondary - dark surfaces */
     --secondary: 0 0% 8%;
     --secondary-foreground: 0 0% 100%;
     
-    /* Muted */
     --muted: 0 0% 12%;
     --muted-foreground: 0 0% 60%;
     
-    /* Borders */
     --border: 0 0% 20%;
     --input: 0 0% 15%;
     --ring: 10 86% 54%;
     
-    /* Destructive */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     --radius: 0.125rem;
     
-    /* HUD specific */
     --hud-glow: 0 0 20px hsl(10 86% 54% / 0.5);
     --hud-border: 0 0% 25%;
     --scanline-opacity: 0.03;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -72,7 +61,6 @@
     @apply uppercase tracking-wider font-bold;
   }
   
-  /* Selection color */
   ::selection {
     background: hsl(var(--accent) / 0.3);
     color: hsl(var(--foreground));
@@ -80,7 +68,6 @@
 }
 
 @layer components {
-  /* HUD Border style */
   .hud-border {
     @apply border border-border relative;
     box-shadow: inset 0 0 20px rgba(239, 69, 36, 0.05);
@@ -100,7 +87,6 @@
     @apply bottom-0 right-0 border-b-2 border-r-2;
   }
   
-  /* Accent border glow on hover */
   .hud-glow {
     @apply transition-all duration-300;
   }
@@ -111,7 +97,6 @@
     @apply border-accent;
   }
   
-  /* Tactical button styles */
   .btn-tactical {
     @apply relative uppercase font-bold tracking-widest px-8 py-4 
            bg-transparent border-2 border-accent text-accent
@@ -132,11 +117,6 @@
     @apply text-background;
   }
   
-  .btn-tactical span {
-    @apply relative z-10;
-  }
-  
-  /* Primary filled button */
   .btn-primary {
     @apply relative uppercase font-bold tracking-widest px-8 py-4 
            bg-accent border-2 border-accent text-background
@@ -148,7 +128,6 @@
     box-shadow: 0 0 30px hsl(var(--accent) / 0.6);
   }
   
-  /* Scanline overlay effect */
   .scanlines {
     @apply pointer-events-none fixed inset-0 z-50;
     background: repeating-linear-gradient(
@@ -160,98 +139,22 @@
     );
   }
   
-  /* Grid overlay */
   .grid-overlay {
     background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
     background-size: 50px 50px;
   }
-  
-  /* Animated border tick marks */
-  .tick-marks {
-    @apply relative;
-  }
-  
-  .tick-marks::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-0.5 bg-accent;
-    animation: tick-scan 3s ease-in-out infinite;
-  }
-  
-  /* Section divider */
-  .section-divider {
-    @apply relative h-px bg-border my-20;
-  }
-  
-  .section-divider::before {
-    content: '';
-    @apply absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 
-           w-4 h-4 bg-accent rotate-45;
-  }
-  
-  /* Text styles */
-  .text-tactical {
-    font-family: 'Orbitron', sans-serif;
-    @apply uppercase tracking-widest;
-  }
-  
-  .text-hud {
-    font-family: 'Rajdhani', sans-serif;
-    @apply font-semibold tracking-wide;
-  }
-  
-  /* Glitch text effect */
-  .glitch {
-    @apply relative;
-  }
-  
-  .glitch::before,
-  .glitch::after {
-    content: attr(data-text);
-    @apply absolute top-0 left-0 w-full h-full;
-  }
-  
-  .glitch::before {
-    @apply text-accent;
-    animation: glitch-1 2s infinite linear alternate-reverse;
-  }
-  
-  .glitch::after {
-    @apply text-foreground;
-    animation: glitch-2 3s infinite linear alternate-reverse;
-  }
-  
-  /* Card hover tilt effect applied via JS */
-  .card-tilt {
-    @apply transition-transform duration-200;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-  }
-  
-  /* Nav link style */
-  .nav-link {
-    @apply relative uppercase tracking-widest text-sm font-semibold 
-           text-muted-foreground hover:text-foreground transition-colors duration-300;
-  }
-  
-  .nav-link::after {
-    content: '';
-    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300;
-  }
-  
-  .nav-link:hover::after,
-  .nav-link.active::after {
-    @apply w-full;
-  }
-  
-  .nav-link.active {
-    @apply text-accent;
+
+  .no-word-break {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    hyphens: none;
+    white-space: normal;
   }
 }
 
 @layer utilities {
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
     @apply w-2;
   }
@@ -268,7 +171,6 @@
     @apply bg-accent;
   }
   
-  /* Hide scrollbar but allow scroll */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

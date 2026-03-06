@@ -1,99 +1,121 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Search, Calendar, MapPin, ArrowRight, X, Users } from "lucide-react";
+import { Search, Calendar, MapPin, X, Users, ArrowRight } from "lucide-react";
+import Papa from "papaparse";
+
 import PageTransition from "@/components/PageTransition";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GridBackground from "@/components/GridBackground";
 
-const events = [
-  {
-    id: 1,
-    title: "Opening Ceremony",
-    description: "Grand inauguration with industry leaders and special performances.",
-    fullDescription: "Witness the spectacular opening of NEXERA with keynote speeches from industry veterans, cultural performances, and the unveiling of this year's theme. The ceremony sets the tone for three days of innovation and competition.",
-    date: "March 15, 2024",
-    time: "10:00 AM",
-    venue: "Main Auditorium",
-    capacity: "1000+ attendees",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Industry Panel Discussion",
-    description: "Leaders from Fortune 500 companies discuss the future of manufacturing.",
-    fullDescription: "Join an exclusive panel featuring executives from leading manufacturing companies. Topics include AI in manufacturing, sustainable operations, and the skills needed for tomorrow's industrial workforce. Q&A session included.",
-    date: "March 15, 2024",
-    time: "2:00 PM",
-    venue: "Conference Hall A",
-    capacity: "300 attendees",
-    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=600&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Tech Exhibition",
-    description: "Showcase of cutting-edge industrial technology and student projects.",
-    fullDescription: "Explore the latest in industrial technology from our sponsor companies and witness innovative student projects. Interactive demos, VR experiences, and networking opportunities with company representatives.",
-    date: "March 15-17, 2024",
-    time: "All Day",
-    venue: "Exhibition Center",
-    capacity: "Open to all",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=600&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Networking Night",
-    description: "Connect with industry professionals in an exclusive evening event.",
-    fullDescription: "An evening dedicated to building connections. Mix and mingle with industry professionals, alumni, and fellow participants. Light refreshments served. Dress code: Smart casual.",
-    date: "March 16, 2024",
-    time: "7:00 PM",
-    venue: "Rooftop Garden",
-    capacity: "200 attendees",
-    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Closing Ceremony & Awards",
-    description: "Celebrate winners and wrap up an incredible technical fest.",
-    fullDescription: "The grand finale of NEXERA! Winners of all competitions will be recognized, prizes distributed, and special achievements celebrated. Don't miss the closing performance and the announcement of next year's dates.",
-    date: "March 17, 2024",
-    time: "5:00 PM",
-    venue: "Main Auditorium",
-    capacity: "1000+ attendees",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Career Fair",
-    description: "Meet recruiters from top industrial and tech companies.",
-    fullDescription: "Bring your resume and meet recruiters from leading companies. On-spot interviews, internship opportunities, and career guidance sessions. Open to all students and recent graduates.",
-    date: "March 16, 2024",
-    time: "10:00 AM - 4:00 PM",
-    venue: "Sports Complex",
-    capacity: "Open to all",
-    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=600&fit=crop",
-  },
-];
+interface EventType {
+  id: number;
+  title: string;
+  description: string;
+  fullDescription: string;
+  date: string;
+  time: string;
+  venue: string;
+  capacity: string;
+  image: string;
+  link: string;
+}
+
+interface RawEventData {
+  [key: string]: string;
+}
 
 const Events = () => {
+  const [events, setEvents] = useState<EventType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedEvent, setSelectedEvent] = useState<typeof events[0] | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventType | null>(null);
+
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true });
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch(import.meta.env.VITE_EVENTS_URL);
+        
+        if (!res.ok) {
+          throw new Error("Failed to fetch events data.");
+        }
+        
+        const text = await res.text();
+
+        Papa.parse<RawEventData>(text, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            const formatted = result.data.map((item) => {
+              // Smart Link Logic
+              let rawLink = item.link || item.Link || item.LINK || item.url || "";
+              
+              // Only add https if there is actually a link text
+              if (rawLink && rawLink !== "#" && !rawLink.startsWith("http")) {
+                rawLink = `https://${rawLink}`;
+              }
+
+              return {
+                id: Number(item.id),
+                title: item.title,
+                description: item.description,
+                fullDescription: item.fullDescription,
+                date: item.date,
+                time: item.time,
+                venue: item.venue,
+                capacity: item.capacity,
+                image: item.image,
+                link: rawLink,
+              };
+            });
+            
+            console.log("Events Loaded:", formatted);
+            setEvents(formatted);
+            setLoading(false);
+          },
+          error: (err: any) => {
+            setError(err.message || "Error parsing events data.");
+            setLoading(false);
+          }
+        });
+      } catch (err: any) {
+        console.error("Events fetch error:", err);
+        setError(err.message || "An unexpected error occurred while loading events.");
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   const filteredEvents = useMemo(() => {
+    const query = searchQuery.toLowerCase();
     return events.filter((event) =>
-      event.title.toLowerCase().includes(searchQuery.toLowerCase())
+      event.title?.toLowerCase().includes(query) ||
+      event.description?.toLowerCase().includes(query) ||
+      event.venue?.toLowerCase().includes(query)
     );
-  }, [searchQuery]);
+  }, [events, searchQuery]);
+
+  const handleKeyDown = (e: React.KeyboardEvent, event: EventType) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setSelectedEvent(event);
+    }
+  };
 
   return (
     <PageTransition>
       <GridBackground />
       <Navbar />
-      
+
       <main className="relative z-10 pt-32 pb-20 min-h-screen">
         <div className="container mx-auto px-6">
+
           {/* Header */}
           <motion.div
             ref={headerRef}
@@ -109,163 +131,179 @@ const Events = () => {
               The <span className="text-accent">Experience</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-body">
-              Beyond competitions, NEXERA offers experiences that will shape your journey.
+              Beyond competitions, NEXERA offers unforgettable experiences.
             </p>
           </motion.div>
 
-          {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-md mx-auto mb-16"
-          >
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-card/50 border border-border pl-12 pr-4 py-4 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
-              />
+          {/* Search */}
+          <div className="max-w-md mx-auto mb-16 relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search by name, location, or keyword..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-card/50 border border-border pl-12 pr-4 py-4 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors rounded-md"
+            />
+          </div>
+
+          {/* Status Displays */}
+          {loading && (
+            <div className="text-center py-20 text-muted-foreground">
+              Loading events...
             </div>
-          </motion.div>
+          )}
 
-          {/* Events Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {filteredEvents.map((event, index) => (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                onClick={() => setSelectedEvent(event)}
-                className="group cursor-pointer hud-border hud-glow bg-card/30 overflow-hidden"
-              >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
-                </div>
+          {error && (
+            <div className="text-center py-20 text-destructive font-semibold">
+              {error}
+            </div>
+          )}
 
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="font-display text-xl mb-2 group-hover:text-accent transition-colors">
-                    {event.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground font-body mb-4 line-clamp-2">
-                    {event.description}
-                  </p>
+          {!loading && !error && filteredEvents.length === 0 && (
+            <div className="text-center py-20 text-muted-foreground">
+              No events found matching your search.
+            </div>
+          )}
 
-                  {/* Meta */}
-                  <div className="space-y-2 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-3 h-3 text-accent" />
-                      <span>{event.date} • {event.time}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-3 h-3 text-accent" />
-                      <span>{event.venue}</span>
-                    </div>
+          {/* Event Grid */}
+          {!loading && !error && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredEvents.map((event) => (
+                <div
+                  key={event.id}
+                  onClick={() => setSelectedEvent(event)}
+                  onKeyDown={(e) => handleKeyDown(e, event)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${event.title}`}
+                  className="group cursor-pointer hud-border hud-glow bg-card/30 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent rounded-lg flex flex-col h-full"
+                >
+                  <div className="relative h-48 overflow-hidden shrink-0">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
                   </div>
 
-                  {/* CTA */}
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <span className="flex items-center gap-2 text-accent text-sm font-display uppercase tracking-wider group-hover:gap-4 transition-all">
-                      Learn More
-                      <ArrowRight className="w-4 h-4" />
-                    </span>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="font-display text-xl mb-2 group-hover:text-accent transition-colors">
+                      {event.title}
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
+                      {event.description}
+                    </p>
+
+                    <div className="space-y-2 text-xs text-muted-foreground mb-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-3 h-3 text-accent" />
+                        <span>{event.date} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3 h-3 text-accent" />
+                        <span>{event.venue}</span>
+                      </div>
+                    </div>
+
+                    {/* View Details Button */}
+                    <div className="pt-4 border-t border-border mt-auto">
+                      <button className="text-accent text-sm font-display tracking-wide uppercase flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
+                        View Details <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {filteredEvents.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
-              <p className="text-muted-foreground text-lg">No events found matching your search.</p>
-            </motion.div>
+              ))}
+            </div>
           )}
         </div>
       </main>
 
-      {/* Detail Modal */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedEvent && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-background/90 backdrop-blur-sm"
             onClick={() => setSelectedEvent(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 50 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 50 }}
-              transition={{ duration: 0.3 }}
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-card border border-border"
+              className="relative w-full max-w-4xl bg-black border border-white/10 rounded-none shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
             >
-              {/* Close button */}
+              {/* Close Button */}
               <button
                 onClick={() => setSelectedEvent(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-colors bg-background"
+                className="absolute top-4 right-4 z-20 p-2 bg-black/60 hover:bg-accent hover:text-black rounded transition-all duration-300 focus:outline-none"
+                aria-label="Close dialog"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-white" />
               </button>
 
-              {/* Image */}
-              <div className="relative h-64 md:h-80">
+              {/* Hero Image Section */}
+              <div className="shrink-0 relative h-80 w-full">
                 <img
                   src={selectedEvent.image}
                   alt={selectedEvent.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-              </div>
-
-              {/* Content */}
-              <div className="p-8 -mt-20 relative">
-                <h2 className="text-3xl md:text-4xl font-display mb-4">{selectedEvent.title}</h2>
                 
-                <div className="grid md:grid-cols-2 gap-4 mb-8 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-accent" />
-                    <span>{selectedEvent.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-accent" />
-                    <span>{selectedEvent.venue}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4 text-accent" />
-                    <span>{selectedEvent.capacity}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+                <div className="absolute bottom-0 left-0 w-full p-8">
+                  <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-wider mb-4 drop-shadow-lg">
+                    {selectedEvent.title}
+                  </h2>
+                  
+                  <div className="flex flex-wrap items-center gap-6 text-sm md:text-base font-medium text-accent/90">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span>{selectedEvent.date} • {selectedEvent.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                       <MapPin className="w-5 h-5" />
+                       <span>{selectedEvent.venue}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5" />
+                      <span>Capacity: {selectedEvent.capacity}</span>
+                    </div>
                   </div>
                 </div>
-
-                <p className="text-lg text-muted-foreground font-body mb-8 leading-relaxed">
-                  {selectedEvent.fullDescription}
-                </p>
-
-                <button className="btn-primary">
-                  Add to Schedule
-                </button>
               </div>
+
+              {/* Content Body */}
+              <div className="p-8 overflow-y-auto flex-grow bg-black">
+                <div className="text-gray-300 leading-relaxed text-lg mb-8 max-w-3xl">
+                  {selectedEvent.fullDescription || selectedEvent.description}
+                </div>
+
+                {/* 🔹 REGISTER LINK (Only renders if link exists) */}
+                {selectedEvent.link && selectedEvent.link !== "#" && (
+                  <div className="mt-auto pt-4">
+                    <a 
+                      href={selectedEvent.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block relative bg-accent text-white font-display font-bold uppercase tracking-widest text-lg px-10 py-4 hover:bg-accent/80 transition-all duration-300 text-center"
+                      style={{ clipPath: "polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)" }}
+                    >
+                      Register Now
+                    </a>
+                  </div>
+                )}
+              </div>
+
             </motion.div>
           </motion.div>
         )}
