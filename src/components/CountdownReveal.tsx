@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function CountdownReveal() {
   const [timeLeft, setTimeLeft] = useState({
@@ -9,9 +10,10 @@ export default function CountdownReveal() {
   });
 
   useEffect(() => {
-    // Set target date to 7 days from now (Replace with your actual launch date)
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 7);
+    // Set target date to March 18th, 9:00 AM of the current year
+    const currentYear = new Date().getFullYear();
+    // Format: YYYY-MM-DDTHH:MM:SS (24-hour time)
+    const targetDate = new Date(`${currentYear}-03-18T09:00:00`);
 
     const interval = setInterval(() => {
       const now = new Date();
@@ -25,6 +27,7 @@ export default function CountdownReveal() {
           seconds: Math.floor((difference / 1000) % 60),
         });
       } else {
+        // If the date has passed, clear the interval and keep everything at 0
         clearInterval(interval);
       }
     }, 1000);
@@ -65,9 +68,14 @@ export default function CountdownReveal() {
            <TimeUnit value={timeLeft.seconds} label="SECS" />
         </div>
 
-        <button className="mt-16 btn-primary w-full sm:w-auto text-center">
-          ACCESS TERMINAL
-        </button>
+        <Link
+          to="/programs"
+          className="group relative mt-16 inline-flex w-full sm:w-auto items-center justify-center overflow-hidden text-center hover:-translate-y-1 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background btn-primary"
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-background/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <span className="absolute inset-y-0 left-[-30%] w-1/3 -skew-x-12 bg-background/20 opacity-0 blur-md transition-all duration-500 group-hover:left-[110%] group-hover:opacity-100" />
+          <span className="relative z-10">ACCESS TERMINAL</span>
+        </Link>
       </div>
     </section>
   );
@@ -79,11 +87,6 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 
   return (
     <div className="flex flex-col items-center">
-      {/* CHANGED: Increased widths to create a wider rectangular shape.
-        Mobile: w-24 (was 20)
-        Small: w-32 (was 28)
-        Desktop: w-48 (was 40)
-      */}
       <div className="relative hud-border hud-glow bg-card/80 backdrop-blur-md rounded-xl w-24 h-20 sm:w-32 sm:h-28 md:w-48 md:h-40 flex justify-center items-center shadow-lg transition-all duration-300">
         
         <span 
