@@ -10,10 +10,10 @@ export default function CountdownReveal() {
   });
 
   useEffect(() => {
-    // Set target date to March 18th, 9:00 AM of the current year
+    // Set target date to March 23rd, 9:00 AM of the current year
     const currentYear = new Date().getFullYear();
     // Format: YYYY-MM-DDTHH:MM:SS (24-hour time)
-    const targetDate = new Date(`${currentYear}-03-18T09:00:00`);
+    const targetDate = new Date(`${currentYear}-03-23T09:00:00`);
 
     const interval = setInterval(() => {
       const now = new Date();
