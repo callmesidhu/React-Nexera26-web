@@ -272,7 +272,7 @@ export default function HorizontalScrollSection() {
         {/* Mobile: Staggered Left */}
         <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
           <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
-            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+            <div className="col-span-1 relative mt-12 sm:mt-16 p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
                   src={horizontalScrollImages.innovationPrimary}
@@ -365,7 +365,7 @@ export default function HorizontalScrollSection() {
             <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src={horizontalScrollImages.nexeraPrimary}
+                  src={horizontalScrollImages.futureSecondary}
                   className="w-full h-full object-cover"
                   alt="Nexera Platform"
                 />
@@ -382,7 +382,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute near w-[26vw]" style={{ left: "210vw", top: "18vh" }}>
           <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
-              src={horizontalScrollImages.futurePrimary}
+              src={horizontalScrollImages.galleryFour}
               className="w-full h-auto object-cover"
               alt="Build the Future"
             />
@@ -427,10 +427,10 @@ export default function HorizontalScrollSection() {
         {/* Mobile: Staggered Left */}
         <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
           <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
-            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+            <div className="col-span-1 relative mt-12 sm:mt-16 p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src={horizontalScrollImages.futurePrimary}
+                  src={horizontalScrollImages.innovationAccent}
                   className="w-full h-full object-cover"
                   alt="Build the Future"
                 />
