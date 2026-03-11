@@ -82,7 +82,7 @@ const About = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-body"
             >
-              More than a fest. An arena where tomorrow's industrial leaders are forged.
+              More than a fest. A space where future industrial engineers discover what they are truly capable of.
             </motion.p>
           </div>
 
@@ -122,21 +122,51 @@ const About = () => {
               >
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-12 h-px bg-accent" />
+                  <span className="text-accent text-sm uppercase tracking-widest font-display">What Is Nexera?</span>
+                </div>
+
+                <p className="text-xl md:text-2xl text-foreground font-body leading-relaxed mb-8">
+                  More than a fest. A space where future industrial engineers discover what they are truly capable of.
+                </p>
+
+                <p className="text-lg text-muted-foreground font-body leading-relaxed">
+                  Nexera is the flagship technical fest of the Industrial Engineering Department at the College of Engineering,
+                  Trivandrum. It is built as a platform where ideas are tested, skills are sharpened, and innovation meets
+                  execution. Through competitions, workshops, and industry interaction, Nexera creates an environment that
+                  challenges students to think critically, act decisively, and collaborate effectively.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="w-full h-px bg-border my-16"
+              />
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mb-16"
+              >
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-px bg-accent" />
                   <span className="text-accent text-sm uppercase tracking-widest font-display">The Origin</span>
                 </div>
                 
                 <p className="text-xl md:text-2xl text-foreground font-body leading-relaxed mb-8">
-                  <span className="text-accent">NEXERA</span> was born from a simple yet powerful idea: 
-                  what if we created an arena where the brightest minds in industrial engineering 
-                  could clash, collaborate, and create?
+                  <span className="text-accent">NEXERA</span> began with a simple question: what if industrial engineering 
+                  students had a platform designed entirely for themselves?
                 </p>
                 
                 <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                  In 2020, a group of passionate students from the Industrial Engineering department 
-                  envisioned a technical fest unlike any other. Not just another college event, 
-                  but a true battleground for innovation—where theoretical knowledge meets 
-                  practical application, where ideas are tested under pressure, and where 
-                  the future of manufacturing is shaped by those who will lead it.
+                  In 2024, a group of driven students from the department envisioned something beyond a conventional 
+                  college fest. They imagined a space where theory meets application, where analytical thinking is pushed 
+                  under pressure, and where collaboration fuels innovation. What started as an idea soon evolved into a 
+                  movement rooted in ambition, precision, and purpose.
                 </p>
               </motion.div>
 
@@ -161,15 +191,13 @@ const About = () => {
                 </div>
                 
                 <p className="text-xl md:text-2xl text-foreground font-body leading-relaxed mb-8">
-                  To bridge the gap between academia and industry, creating a platform where 
-                  students don't just learn—they <span className="text-accent">prove their worth</span>.
+                  To bridge the gap between academia and industry by creating meaningful, practical experiences.
                 </p>
                 
                 <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                  Every workshop is designed with industry experts. Every competition simulates 
-                  real-world challenges. Every connection made here has the potential to shape 
-                  careers. We don't just organize events—we create experiences that transform 
-                  students into professionals, ideas into innovations, and dreams into realities.
+                  Every workshop is curated to reflect industry relevance. Every competition is designed to simulate real
+                  challenges. Every interaction opens doors to new perspectives and opportunities. Nexera exists to help 
+                  students move beyond textbooks and prove their ability to solve, optimize, and lead.
                 </p>
               </motion.div>
 
@@ -193,15 +221,13 @@ const About = () => {
                 </div>
                 
                 <p className="text-xl md:text-2xl text-foreground font-body leading-relaxed mb-8">
-                  To become the <span className="text-accent">premier technical fest</span> in 
-                  industrial engineering—recognized nationally for excellence, innovation, 
-                  and impact.
+                  To grow into a nationally recognized platform for <span className="text-accent">excellence</span> in industrial engineering.
                 </p>
                 
                 <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                  We envision NEXERA as more than an annual event. It's a movement. A community 
-                  of innovators, thinkers, and doers who refuse to accept the status quo. 
-                  Together, we're not just preparing for the future of industry—we're creating it.
+                  We envision Nexera as more than an annual event. It is a growing community of thinkers, builders, 
+                  and problem solvers who strive to raise standards each year. Together, we aim to shape not only 
+                  better engineers, but future leaders who understand systems, strategy, and impact.
                 </p>
               </motion.div>
             </div>
@@ -224,7 +250,7 @@ const About = () => {
               </p>
               <div className="flex items-center justify-center gap-4">
                 <div className="w-8 h-px bg-accent" />
-                <span className="text-muted-foreground font-body">NEXERA Motto</span>
+                <span className="text-muted-foreground font-body">NEXERA</span>
                 <div className="w-8 h-px bg-accent" />
               </div>
             </motion.div>

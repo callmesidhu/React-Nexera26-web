@@ -229,7 +229,11 @@ export default function HorizontalScrollSection() {
               INNOVATION
             </h2>
             <p className="text-muted-foreground">
-              Transforming industrial engineering through precision technology.
+              Innovation is what drives Nexera. It is a space where ideas are explored,
+               improved, and turned into practical solutions. By blending industrial 
+               engineering with new technology and sharp problem-solving, Nexera pushes 
+               participants to think creatively, tackle challenges from fresh angles, and 
+               build solutions that can make a real difference.
             </p>
           </div>
         </div>
@@ -251,7 +255,11 @@ export default function HorizontalScrollSection() {
                 INNOVATION
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                Transforming industrial engineering through precision technology.
+              Innovation is what drives Nexera. It is a space where ideas are explored,
+               improved, and turned into practical solutions. By blending industrial 
+               engineering with new technology and sharp problem-solving, Nexera pushes 
+               participants to think creatively, tackle challenges from fresh angles, and 
+               build solutions that can make a real difference.
               </p>
             </div>
           </div>
@@ -300,7 +308,11 @@ export default function HorizontalScrollSection() {
               NEXERA
             </h2>
             <p className="text-muted-foreground text-lg">
-              A platform where engineering excellence meets real-world innovation challenges.
+              Nexera, derived from “Next-Era,” represents the next generation of industrial
+               engineers. As the flagship fest of the Industrial Engineering Department at 
+               the College of Engineering, Trivandrum, it brings together students and 
+               innovators through competitions, workshops, and interactive events that 
+               celebrate learning, collaboration, and creativity.
             </p>
           </div>
         </div>
@@ -313,7 +325,10 @@ export default function HorizontalScrollSection() {
                 NEXERA
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                A platform where engineering excellence meets real-world innovation challenges.
+                Nexera, derived from “Next-Era,” reflects the next generation of industrial 
+                engineers. It brings together students and innovators through competitions, 
+                workshops, and interactive events built around learning, collaboration, and 
+                creativity.
               </p>
             </div>
             <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
@@ -370,7 +385,10 @@ export default function HorizontalScrollSection() {
               BUILD THE FUTURE
             </h2>
             <p className="text-muted-foreground">
-              Where ideas turn into impact.
+              Nexera encourages participants to look beyond the present and prepare for the 
+              future. Through hands-on experiences, problem-solving challenges, and meaningful 
+              interactions, it helps develop the skills and mindset needed to design smarter systems, 
+              solve complex problems, and shape the future of industry.
             </p>
           </div>
         </div>
@@ -392,7 +410,10 @@ export default function HorizontalScrollSection() {
                 BUILD THE FUTURE
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                Where ideas turn into impact.
+                Nexera encourages participants to look beyond the present and prepare for the future. 
+                Through hands-on experiences, problem-solving challenges, and meaningful interactions, 
+                it helps develop the skills and mindset needed to design smarter systems, solve complex 
+                problems, and shape the future of industry.    
               </p>
             </div>
           </div>
