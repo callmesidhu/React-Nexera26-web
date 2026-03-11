@@ -50,7 +50,7 @@ const About = () => {
           </div>
 
           {/* Content */}
-          <div ref={headerRef} className="relative z-10 text-center px-6">
+          <div ref={headerRef} className="relative z-10 max-w-4xl px-6 text-center">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
@@ -84,6 +84,18 @@ const About = () => {
             >
               More than a fest. A space where future industrial engineers discover what they are truly capable of.
             </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground/90 sm:text-base md:mt-8 md:text-lg"
+            >
+              Nexera is the flagship technical fest of the Industrial Engineering Department at the College of Engineering,
+              Trivandrum. It is built as a platform where ideas are tested, skills are sharpened, and innovation meets
+              execution. Through competitions, workshops, and industry interaction, Nexera creates an environment that
+              challenges students to think critically, act decisively, and collaborate effectively.
+            </motion.p>
           </div>
 
           {/* Scroll indicator */}
@@ -113,38 +125,6 @@ const About = () => {
 
           <div className="container mx-auto px-6 relative z-10">
             <div className="max-w-4xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="mb-16"
-              >
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-px bg-accent" />
-                  <span className="text-accent text-sm uppercase tracking-widest font-display">What Is Nexera?</span>
-                </div>
-
-                <p className="text-xl md:text-2xl text-foreground font-body leading-relaxed mb-8">
-                  More than a fest. A space where future industrial engineers discover what they are truly capable of.
-                </p>
-
-                <p className="text-lg text-muted-foreground font-body leading-relaxed">
-                  Nexera is the flagship technical fest of the Industrial Engineering Department at the College of Engineering,
-                  Trivandrum. It is built as a platform where ideas are tested, skills are sharpened, and innovation meets
-                  execution. Through competitions, workshops, and industry interaction, Nexera creates an environment that
-                  challenges students to think critically, act decisively, and collaborate effectively.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="w-full h-px bg-border my-16"
-              />
-
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
