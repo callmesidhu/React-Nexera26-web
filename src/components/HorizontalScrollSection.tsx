@@ -1,8 +1,39 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import autoshow1 from "@/assets/horizontalscroll/autoshow_1.jpg";
+import autoshow2 from "@/assets/horizontalscroll/autoshow_2.jpg";
+import autoshow3 from "@/assets/horizontalscroll/autoshow_3.jpg";
+import focus1 from "@/assets/horizontalscroll/focus_1.jpg";
+import focus2 from "@/assets/horizontalscroll/focus_2.jpg";
+import focus3 from "@/assets/horizontalscroll/focus_3.jpg";
+import focus4 from "@/assets/horizontalscroll/focus_4.jpg";
+import focus5 from "@/assets/horizontalscroll/focus_5.jpg";
+import focus6 from "@/assets/horizontalscroll/focus_6.jpg";
+import group1 from "@/assets/horizontalscroll/group_1.jpg";
+import group2 from "@/assets/horizontalscroll/group_2.jpg";
+import groupPhoto1 from "@/assets/horizontalscroll/group_photo_1.jpg";
+import groupPhoto2 from "@/assets/horizontalscroll/group_photo_2.jpg";
+import show1 from "@/assets/horizontalscroll/show_1.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const horizontalScrollImages = {
+  innovationPrimary: autoshow1,
+  innovationSecondary: autoshow2,
+  innovationAccent: autoshow3,
+  nexeraPrimary: group1,
+  nexeraSecondary: group2,
+  nexeraAccent: show1,
+  futurePrimary: focus1,
+  futureSecondary: focus2,
+  futureAccent: focus3,
+  galleryOne: focus4,
+  galleryTwo: focus5,
+  galleryThree: focus6,
+  galleryFour: groupPhoto1,
+  galleryFive: groupPhoto2,
+};
 
 export default function HorizontalScrollSection() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -216,7 +247,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute near w-[24vw]" style={{ left: "40vw", top: "15vh" }}>
           <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
-              src="https://picsum.photos/900/1100?1"
+              src={horizontalScrollImages.innovationPrimary}
               className="w-full h-auto object-cover"
               alt="Innovation"
             />
@@ -229,7 +260,11 @@ export default function HorizontalScrollSection() {
               INNOVATION
             </h2>
             <p className="text-muted-foreground">
-              Transforming industrial engineering through precision technology.
+              Innovation is what drives Nexera. It is a space where ideas are explored,
+               improved, and turned into practical solutions. By blending industrial 
+               engineering with new technology and sharp problem-solving, Nexera pushes 
+               participants to think creatively, tackle challenges from fresh angles, and 
+               build solutions that can make a real difference.
             </p>
           </div>
         </div>
@@ -237,10 +272,10 @@ export default function HorizontalScrollSection() {
         {/* Mobile: Staggered Left */}
         <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
           <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
-            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+            <div className="col-span-1 relative mt-12 sm:mt-16 p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src="https://picsum.photos/900/1100?1"
+                  src={horizontalScrollImages.innovationPrimary}
                   className="w-full h-full object-cover"
                   alt="Innovation"
                 />
@@ -251,7 +286,11 @@ export default function HorizontalScrollSection() {
                 INNOVATION
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                Transforming industrial engineering through precision technology.
+              Innovation is what drives Nexera. It is a space where ideas are explored,
+               improved, and turned into practical solutions. By blending industrial 
+               engineering with new technology and sharp problem-solving, Nexera pushes 
+               participants to think creatively, tackle challenges from fresh angles, and 
+               build solutions that can make a real difference.
               </p>
             </div>
           </div>
@@ -265,7 +304,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute near w-[34vw]" style={{ left: "110vw", top: "20vh" }}>
           <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
-              src="https://picsum.photos/1200/900?3"
+              src={horizontalScrollImages.nexeraPrimary}
               className="w-full h-auto object-cover"
               alt="Nexera Platform"
             />
@@ -276,7 +315,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute far w-[12vw]" style={{ left: "130vw", top: "60vh" }}>
           <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
-              src="https://picsum.photos/500/700?4"
+              src={horizontalScrollImages.nexeraSecondary}
               className="w-full h-auto object-cover grayscale"
               alt="Detail"
             />
@@ -287,7 +326,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute far w-[16vw]" style={{ left: "150vw", top: "10vh" }}>
           <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
-              src="https://picsum.photos/700/900?5"
+              src={horizontalScrollImages.nexeraAccent}
               className="w-full h-auto object-cover opacity-70"
               alt="Detail"
             />
@@ -300,7 +339,11 @@ export default function HorizontalScrollSection() {
               NEXERA
             </h2>
             <p className="text-muted-foreground text-lg">
-              A platform where engineering excellence meets real-world innovation challenges.
+              Nexera, derived from “Next-Era,” represents the next generation of industrial
+               engineers. As the flagship fest of the Industrial Engineering Department at 
+               the College of Engineering, Trivandrum, it brings together students and 
+               innovators through competitions, workshops, and interactive events that 
+               celebrate learning, collaboration, and creativity.
             </p>
           </div>
         </div>
@@ -313,13 +356,16 @@ export default function HorizontalScrollSection() {
                 NEXERA
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                A platform where engineering excellence meets real-world innovation challenges.
+                Nexera, derived from “Next-Era,” reflects the next generation of industrial 
+                engineers. It brings together students and innovators through competitions, 
+                workshops, and interactive events built around learning, collaboration, and 
+                creativity.
               </p>
             </div>
             <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src="https://picsum.photos/1200/900?3"
+                  src={horizontalScrollImages.futureSecondary}
                   className="w-full h-full object-cover"
                   alt="Nexera Platform"
                 />
@@ -336,7 +382,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute near w-[26vw]" style={{ left: "210vw", top: "18vh" }}>
           <div className="w-full overflow-hidden rounded-xl shadow-2xl">
             <img
-              src="https://picsum.photos/900/1200?6"
+              src={horizontalScrollImages.galleryFour}
               className="w-full h-auto object-cover"
               alt="Build the Future"
             />
@@ -346,7 +392,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute far w-[14vw]" style={{ left: "230vw", top: "58vh" }}>
           <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
-              src="https://picsum.photos/600/800?7"
+              src={horizontalScrollImages.futureSecondary}
               className="w-full h-auto object-cover"
               alt="Impact Detail"
             />
@@ -357,7 +403,7 @@ export default function HorizontalScrollSection() {
         <div className="hidden md:block absolute far w-[12vw]" style={{ left: "250vw", top: "12vh" }}>
           <div className="w-full overflow-hidden rounded-lg shadow-xl">
             <img
-              src="https://picsum.photos/500/700?8"
+              src={horizontalScrollImages.futureAccent}
               className="w-full h-auto object-cover opacity-70"
               alt="Impact Detail"
             />
@@ -370,7 +416,10 @@ export default function HorizontalScrollSection() {
               BUILD THE FUTURE
             </h2>
             <p className="text-muted-foreground">
-              Where ideas turn into impact.
+              Nexera encourages participants to look beyond the present and prepare for the 
+              future. Through hands-on experiences, problem-solving challenges, and meaningful 
+              interactions, it helps develop the skills and mindset needed to design smarter systems, 
+              solve complex problems, and shape the future of industry.
             </p>
           </div>
         </div>
@@ -378,10 +427,10 @@ export default function HorizontalScrollSection() {
         {/* Mobile: Staggered Left */}
         <div className="md:hidden w-full px-3 sm:px-6 py-6 sm:py-8">
           <div className="grid grid-cols-2 gap-3 sm:gap-6 items-start">
-            <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
+            <div className="col-span-1 relative mt-12 sm:mt-16 p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src="https://picsum.photos/900/1200?6"
+                  src={horizontalScrollImages.innovationAccent}
                   className="w-full h-full object-cover"
                   alt="Build the Future"
                 />
@@ -392,7 +441,10 @@ export default function HorizontalScrollSection() {
                 BUILD THE FUTURE
               </h2>
               <p className="text-muted-foreground text-xs sm:text-sm leading-tight sm:leading-relaxed no-word-break">
-                Where ideas turn into impact.
+                Nexera encourages participants to look beyond the present and prepare for the future. 
+                Through hands-on experiences, problem-solving challenges, and meaningful interactions, 
+                it helps develop the skills and mindset needed to design smarter systems, solve complex 
+                problems, and shape the future of industry.    
               </p>
             </div>
           </div>

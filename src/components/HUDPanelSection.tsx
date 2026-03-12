@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Cpu, Zap, Calendar, Users, ArrowRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const panels = [
   {
@@ -42,6 +43,7 @@ const HUDPanelSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   // 1. Track Scroll Progress
   const { scrollYProgress } = useScroll({
@@ -61,25 +63,25 @@ const HUDPanelSection = () => {
   const smoothYDown = useSpring(yDown, springConfig);
 
   return (
-    <section ref={containerRef} className="relative py-32 overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section ref={containerRef} className="relative flex min-h-screen items-center overflow-hidden py-16 md:py-32">
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="mb-10 text-center md:mb-20"
         >
-          <span className="text-accent text-sm uppercase tracking-widest font-display">
+          <span className="text-[10px] uppercase tracking-[0.35em] text-accent sm:text-xs md:text-sm font-display">
             [ System Modules ]
           </span>
-          <h2 className="text-4xl md:text-5xl font-display mt-4">
+          <h2 className="mt-3 text-3xl leading-none sm:text-4xl md:mt-4 md:text-5xl font-display">
             The NEXERA Experience
           </h2>
         </motion.div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-4">
           {panels.map((panel, index) => {
             // Apply different directions based on index (Even = Down, Odd = Up)
             const yValue = index % 2 === 0 ? smoothYDown : smoothYUp;
@@ -89,12 +91,12 @@ const HUDPanelSection = () => {
                 key={panel.code}
                 onClick={() => navigate(panel.path)}
                 // 4. APPLY PARALLAX HERE
-                style={{ y: yValue }} 
+                style={{ y: isMobile ? 0 : yValue }} 
                 // Only animate opacity, do not animate 'y' or it breaks parallax
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
-                className="group relative hud-border hud-glow bg-card/50 p-6 backdrop-blur-sm flex flex-col h-full cursor-pointer overflow-hidden rounded-xl border border-white/5"
+                className="group relative flex h-full min-h-[210px] cursor-pointer flex-col overflow-hidden rounded-xl border border-white/5 bg-card/50 p-4 backdrop-blur-sm hud-border hud-glow sm:min-h-[230px] sm:p-5 md:min-h-[280px] md:p-6"
               >
                 {/* Background Hover Effect */}
                 <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -104,17 +106,17 @@ const HUDPanelSection = () => {
                 <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-accent/50 opacity-0 group-hover:opacity-100 transition-all duration-300" />
 
                 {/* Code Tag */}
-                <div className="absolute top-4 right-4">
-                  <span className="text-[10px] md:text-xs text-muted-foreground font-mono group-hover:text-accent transition-colors border border-white/10 px-2 py-1 rounded">
+                <div className="absolute right-3 top-3 md:right-4 md:top-4">
+                  <span className="rounded border border-white/10 px-2 py-1 font-mono text-[9px] text-muted-foreground transition-colors group-hover:text-accent sm:text-[10px] md:text-xs">
                     {panel.code}
                   </span>
                 </div>
 
                 {/* Icon */}
-                <div className="mb-6 mt-2 relative z-10">
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors duration-300">
+                <div className="relative z-10 mb-4 mt-1 md:mb-6 md:mt-2">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 transition-colors duration-300 group-hover:bg-accent/20 md:h-12 md:w-12">
                     <panel.icon
-                      className="w-6 h-6 text-accent group-hover:scale-110 transition-transform duration-300"
+                      className="h-5 w-5 text-accent transition-transform duration-300 group-hover:scale-110 md:h-6 md:w-6"
                       strokeWidth={1.5}
                     />
                   </div>
@@ -122,21 +124,21 @@ const HUDPanelSection = () => {
 
                 {/* Content */}
                 <div className="relative z-10 flex-grow">
-                  <h3 className="text-xl font-display mb-3 text-foreground group-hover:text-accent transition-colors">
+                  <h3 className="mb-2 text-base text-foreground transition-colors group-hover:text-accent sm:text-lg md:mb-3 md:text-xl font-display">
                     {panel.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground font-body leading-relaxed group-hover:text-gray-300 transition-colors">
+                  <p className="font-body text-[11px] leading-snug text-muted-foreground transition-colors group-hover:text-gray-300 sm:text-xs md:text-sm md:leading-relaxed">
                     {panel.description}
                   </p>
                 </div>
 
                 {/* Action Link */}
-                <div className="mt-8 pt-4 border-t border-white/10 relative z-10">
+                <div className="relative z-10 mt-4 border-t border-white/10 pt-3 md:mt-8 md:pt-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-accent uppercase tracking-wider font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
-                      {panel.action} <ArrowRight className="w-3 h-3" />
+                    <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-accent transition-all group-hover:gap-2 sm:text-[11px] md:gap-2 md:text-xs md:tracking-wider">
+                      {panel.action} <ArrowRight className="h-3 w-3" />
                     </span>
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(255,100,0,0.8)]" />
+                    <div className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(255,100,0,0.8)] animate-pulse" />
                   </div>
                 </div>
               </motion.div>

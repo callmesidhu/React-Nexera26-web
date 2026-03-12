@@ -230,9 +230,9 @@ const VisionSection = () => {
             ref={descriptionRef}
             className="mt-16 text-xl md:text-2xl text-muted-foreground max-w-3xl font-body leading-relaxed"
           >
-            NEXERA is not just a technical fest—it's an arena where future
-            engineers clash in intellectual combat, pushing the boundaries of
-            innovation and industrial engineering prowess.
+            NEXERA is more than just a technical fest. It is a space where future engineers 
+            challenge themselves, push ideas further, and explore new possibilities in innovation and 
+            industrial engineering.
           </p>
         </div>
       </div>
