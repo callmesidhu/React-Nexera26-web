@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "S SIDHARTH",
+    "role": "Web Master",
+    "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com/in/callmesidhu",
+    "github": "https://github.com/callmesidhu"
+  },
+  {
+    "id": 2,
+    "name": "Rishi",
+    "role": "Backend Developer",
+    "image": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com"
+  },
+  {
+    "id": 3,
+    "name": "Naveed",
+    "role": "Frontend Developer",
+    "image": "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com"
+  },
+  {
+    "id": 4,
+    "name": "Gokul",
+    "role": "Frontend Developer",
+    "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com"
+  },
+  {
+    "id": 5,
+    "name": "Anjana",
+    "role": "CMS Manager",
+    "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com"
+  }
+]

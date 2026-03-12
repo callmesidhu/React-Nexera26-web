@@ -30,12 +30,7 @@ const Footer = () => {
               >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
+           
             </div>
           </div>
 
@@ -60,10 +55,10 @@ const Footer = () => {
           <div>
             <h4 className="font-display text-sm uppercase tracking-widest mb-6">Contact</h4>
             <ul className="space-y-3 text-muted-foreground font-body">
-              <li>nexera@techfest.com</li>
-              <li>+91 98765 43210</li>
+              <li>nexera@cet.ac.in</li>
+              <li>+91 8330021086</li>
               <li>Industrial Engineering Dept.</li>
-              <li>Your College Name</li>
+              <li>College of Engineering Trivandrum</li>
             </ul>
           </div>
         </div>
@@ -71,11 +66,11 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground font-body">
-            © 2024 NEXERA. All rights reserved.
+            © 2026 NEXERA. All rights reserved.
           </p>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="text-xs font-mono text-muted-foreground">SYSTEM OPERATIONAL</span>
+            <span className="text-xs font-mono text-muted-foreground">Industrial Engineering</span>
           </div>
         </div>
       </div>

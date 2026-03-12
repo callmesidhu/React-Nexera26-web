@@ -130,9 +130,7 @@ const HeroSection = () => {
           className="absolute bottom-12 left-1/2 -translate-x-1/2"
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">
-              Scroll
-            </span>
+
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{
