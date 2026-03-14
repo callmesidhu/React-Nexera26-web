@@ -365,7 +365,7 @@ export default function HorizontalScrollSection() {
             <div className="col-span-1 relative p-1 hud-border hud-glow rounded-lg sm:rounded-xl bg-background/50 backdrop-blur-sm">
               <div className="w-full h-full overflow-hidden rounded-md sm:rounded-lg">
                 <img
-                  src={horizontalScrollImages.futureSecondary}
+                  src={horizontalScrollImages.galleryFour}
                   className="w-full h-full object-cover"
                   alt="Nexera Platform"
                 />
