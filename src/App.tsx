@@ -4,10 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import SplashScreen from "@/components/SplashScreen";
 import Index from "./pages/Index";
 import Programs from "./pages/Programs";
 import Events from "./pages/Events";
@@ -101,18 +102,26 @@ const AnimatedRoutes = () => {
    App Root
 --------------------------------------- */
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <SmoothScroll>
-          <AnimatedRoutes />
-        </SmoothScroll>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => { 
+
+  const [splashDone, setSplashDone] = useState(false);
+
+  return(
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        {!splashDone && (
+            <SplashScreen onComplete={() => setSplashDone(true)} />
+        )}
+        <BrowserRouter>
+          <SmoothScroll>
+            <AnimatedRoutes />
+          </SmoothScroll>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
