@@ -3,16 +3,18 @@ import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import autoshowVideo from "@/assets/Videos/autoshow_trim_vid.mp4";
+import autoshowMobileVideo from "@/assets/Videos/autoshow_trim_mobile.mp4";
 
 const CTASection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [videoError, setVideoError] = useState(false);
+  const [desktopVideoError, setDesktopVideoError] = useState(false);
+  const [mobileVideoError, setMobileVideoError] = useState(false);
 
   return (
     <section ref={sectionRef} className="relative py-32 overflow-hidden">
       {/* Background video (desktop only) */}
-      {!videoError && (
+      {!desktopVideoError && (
         <video
           className="absolute inset-0 w-full h-full object-cover hidden md:block"
           src={autoshowVideo}
@@ -20,14 +22,26 @@ const CTASection = () => {
           loop
           muted
           playsInline
-          onError={() => setVideoError(true)}
+          onError={() => setDesktopVideoError(true)}
+        />
+      )}
+
+      {!mobileVideoError && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover md:hidden"
+          src={autoshowMobileVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onError={() => setMobileVideoError(true)}
         />
       )}
 
       {/* Background effect */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/60 hidden md:block" />
-        <div className={`absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent ${videoError ? "" : "md:hidden"}`} />
+        <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent md:hidden" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-accent/20" />
       </div>
 
