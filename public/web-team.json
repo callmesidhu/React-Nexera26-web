@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "S SIDHARTH",
+    "role": "Web Master",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773376263/SIDHARTH_robuxd.jpg",
+    "linkedin": "https://linkedin.com/in/callmesidhu",
+    "github": "https://github.com/callmesidhu"
+  },
+  {
+    "id": 2,
+    "name": "Rishi",
+    "role": "Backend Developer",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773376263/njan_pjqhhr.jpg",
+    "linkedin": "https://www.linkedin.com/in/rishi-chandran-525970262",
+    "github": "https://github.com/rishichandran1417"
+  },
+  {
+    "id": 3,
+    "name": "Naveed",
+    "role": "Frontend Developer",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773375790/naveed_ilthqa.jpg",
+    "linkedin": "https://www.linkedin.com/in/naveedniaz/",
+    "github": "https://github.com"
+  },
+  {
+    "id": 4,
+    "name": "Gokul",
+    "role": "Frontend Developer",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773375788/gokul_gxhtxq.jpg",
+    "linkedin": "https://www.linkedin.com/in/gokul-s-b-",
+    "github": "https://github.com/Gokulcs-04"
+  },
+  {
+    "id": 5,
+    "name": "Anjana",
+    "role": "CMS Manager",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773375790/anjana_huzuet.jpg",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com"
+  },
+  {
+    "id": 5,
+    "name": "DeviKripa",
+    "role": "CMS Manager",
+    "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773375789/kripa_nbwtgb.jpg",
+    "linkedin": "https://www.linkedin.com/in/devikripa-s-bbb997344/",
+    "github": "https://github.com"
+  }
+]

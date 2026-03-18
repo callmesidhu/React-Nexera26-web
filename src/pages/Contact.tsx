@@ -7,15 +7,14 @@ import Footer from "@/components/Footer";
 import GridBackground from "@/components/GridBackground";
 
 const contacts = [
-  { name: "Arjun Sharma", role: "Fest Coordinator", phone: "+91 98765 43210" },
-  { name: "Priya Patel", role: "Technical Head", phone: "+91 98765 43211" },
-  { name: "Rahul Verma", role: "Events Head", phone: "+91 98765 43212" },
+  { name: "Akash Regi", role: "Convenor", phone: "+91 98765 43210" },
+  { name: "Abhinand C", role: "Convenor", phone: "+91 98765 43211" },
+  { name: "Kevin Sunny", role: "Fest Coordinator", phone: "+91 98765 43212" },
 ];
 
 const socials = [
   { name: "Instagram", icon: Instagram, handle: "@nexera.fest", url: "#" },
   { name: "LinkedIn", icon: Linkedin, handle: "NEXERA Official", url: "#" },
-  { name: "YouTube", icon: Youtube, handle: "NEXERA Channel", url: "#" },
 ];
 
 const Contact = () => {
@@ -98,11 +97,11 @@ const Contact = () => {
                 >
                   <div className="flex items-center gap-3 text-muted-foreground">
                     <Mail className="w-5 h-5 text-accent" />
-                    <span className="font-body">nexera@techfest.com</span>
+                    <span className="font-body">nexera@cet.ac.in</span>
                   </div>
                   <div className="flex items-center gap-3 text-muted-foreground">
                     <MapPin className="w-5 h-5 text-accent" />
-                    <span className="font-body">Industrial Engineering Department, Your College</span>
+                    <span className="font-body">Industrial Engineering, College of Engineering Trivandrum</span>
                   </div>
                 </motion.div>
               </motion.div>
@@ -168,7 +167,7 @@ const Contact = () => {
                     </div>
                     <div className="flex justify-between">
                       <span>Location</span>
-                      <span className="text-foreground">NEXERA.HQ</span>
+                      <span className="text-foreground">IE Block</span>
                     </div>
                   </div>
                 </motion.div>
