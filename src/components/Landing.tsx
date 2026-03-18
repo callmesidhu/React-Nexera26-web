@@ -1,15 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { Link } from "react-router-dom";
 import * as THREE from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 
-// accent: hsl(10, 86%, 54%) → #ef4524
 const ACCENT       = new THREE.Color(0xef4524);
 const ACCENT_DIM   = new THREE.Color(0x7a2210);
 const ACCENT_HEX   = "#ef4524";
-const ACCENT_DIM_HEX = "rgba(239,69,36,0.35)";
+
+const isMobile = () => window.innerWidth < 768;
+
+// z=18: camera far back (small text) → z=-14 desktop / z=2 mobile (big text)
+const DESKTOP_Z_START =  -18;
+const DESKTOP_Z_END   = 10;
+const MOBILE_Z_START  =  -18;
+const MOBILE_Z_END    =   18;
+
+const DESKTOP_FOV_START = 60;
+const DESKTOP_FOV_END   = 85;
+const MOBILE_FOV_START  = 75;   // wider start on mobile so text fits
+const MOBILE_FOV_END    = 90;
 
 // ─── Three.js 3D Title ────────────────────────────────────────────────────────
 const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
@@ -26,11 +36,17 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
+    const mobile = isMobile();
 
-    // ── Scene ───────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, el.clientWidth / el.clientHeight, 0.1, 2000);
-    camera.position.set(0, 0, 18);
+    const camera = new THREE.PerspectiveCamera(
+      mobile ? MOBILE_FOV_START : DESKTOP_FOV_START,
+      el.clientWidth / el.clientHeight,
+      0.1,
+      2000
+    );
+    // Start far back — text is small at page load
+    camera.position.set(0, 0, mobile ? MOBILE_Z_START : DESKTOP_Z_START);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -38,54 +54,42 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
     renderer.setClearColor(0x000000, 0);
     el.appendChild(renderer.domElement);
 
-    // ── Lighting — warm accent tones ────────────────────────────────────
     scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+    scene.add(new THREE.AmbientLight(0x1a0805, 1));
 
-    scene.add(new THREE.AmbientLight(0x1a0805, 1)); // very dark warm ambient — keeps shadows rich
-
-    // White key from front-top → creates crisp specular highlights on the orange surface
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
     keyLight.position.set(3, 8, 12);
     scene.add(keyLight);
 
-    // Accent-coloured fill from left — saturates the colour
     const fillLight = new THREE.DirectionalLight(ACCENT, 2.0);
     fillLight.position.set(-10, 2, 5);
     scene.add(fillLight);
 
-    // Deep red rim from behind — separation from bg
     const rimLight = new THREE.DirectionalLight(0x660000, 3.0);
     rimLight.position.set(0, -6, -12);
     scene.add(rimLight);
 
-    // Close accent point — makes letters glow at centre
     const glowLight = new THREE.PointLight(ACCENT, 3, 50);
     glowLight.position.set(0, 0, 10);
     scene.add(glowLight);
 
-    // ── Particle field ───────────────────────────────────────────────────
     const pGeo = new THREE.BufferGeometry();
     const pCount = 700;
     const pPos = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random() - 0.5) * 90;
     pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({
-      color: ACCENT_DIM,
-      size: 0.07,
-      transparent: true,
-      opacity: 0.5,
-    });
-    const particles = new THREE.Points(pGeo, pMat);
+    const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
+      color: ACCENT_DIM, size: 0.07, transparent: true, opacity: 0.5,
+    }));
     scene.add(particles);
 
-    // ── 3D Text ──────────────────────────────────────────────────────────
     const fontLoader = new FontLoader();
     fontLoader.load(
       "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
       (font) => {
         const geo = new TextGeometry("NEXERA", {
           font,
-          size: 3.2,
+          size: mobile ? 2.8 : 3.2,
           depth: 0.9,
           curveSegments: 14,
           bevelEnabled: true,
@@ -93,7 +97,6 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
           bevelSize: 0.05,
           bevelSegments: 8,
         });
-
         geo.computeBoundingBox();
         const bb = geo.boundingBox!;
         geo.translate(
@@ -102,27 +105,17 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
           -(bb.max.z + bb.min.z) / 2
         );
 
-        // Phong gives sharp specular without needing an env map
-        const solidMat = new THREE.MeshPhongMaterial({
-          color: ACCENT,          // base = exact accent orange-red
-          emissive: new THREE.Color(0x3a0d04),  // dark emissive so shadows stay rich
-          specular: new THREE.Color(0xffffff),   // white specular for sharp highlight
-          shininess: 120,
-        });
-
-        // Wireframe: accent orange, faint
-        const wireMat = new THREE.MeshBasicMaterial({
+        const textMesh = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
           color: ACCENT,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.06,
-        });
-
-        const textMesh = new THREE.Mesh(geo, solidMat);
-        const wireMesh = new THREE.Mesh(geo, wireMat);
+          emissive: new THREE.Color(0x3a0d04),
+          specular: new THREE.Color(0xffffff),
+          shininess: 120,
+        }));
+        const wireMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+          color: ACCENT, wireframe: true, transparent: true, opacity: 0.06,
+        }));
         scene.add(textMesh);
         scene.add(wireMesh);
-
         if (sceneRef.current) {
           sceneRef.current.textMesh = textMesh;
           sceneRef.current.wireMesh = wireMesh;
@@ -130,27 +123,18 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
       }
     );
 
-    // ── Render loop ──────────────────────────────────────────────────────
     let animFrame: number;
     const clock = new THREE.Clock();
-
     const loop = () => {
       animFrame = requestAnimationFrame(loop);
       const t = clock.getElapsedTime();
-
       particles.rotation.y = t * 0.02;
       particles.rotation.x = t * 0.007;
-
-      // Pulse the glow light
       glowLight.intensity = 2.5 + Math.sin(t * 1.8) * 0.6;
-
       const mesh = sceneRef.current?.textMesh;
       if (mesh) {
-        // Idle sway — overridden by scroll effect below
-        mesh.rotation.y = Math.sin(t * 0.4) * 0.05;
-        mesh.position.y = Math.sin(t * 0.6) * 0.1;
+        // static — no idle sway
       }
-
       renderer.render(scene, camera);
     };
     loop();
@@ -172,22 +156,30 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
     };
   }, []);
 
-  // ── Scroll → camera zoom ──────────────────────────────────────────────
+  // Scroll drives camera: p=0 → far back (small), p=1 → close (big)
   useEffect(() => {
     const ref = sceneRef.current;
     if (!ref) return;
-    const { camera } = ref;
+    const mobile = isMobile();
+    const p = Math.min(Math.max(scrollProgress, 0), 1);
 
-    // z: 18 (far) → -8 (fully through)
-    camera.position.z = THREE.MathUtils.lerp(-8, 18, Math.min(scrollProgress, 1));
-    camera.fov = THREE.MathUtils.lerp(60, 90, Math.min(scrollProgress * 0.8, 0.8));
-    camera.updateProjectionMatrix();
+    // lerp(start, end, p): p=0 → start (far, small), p=1 → end (close, big)
+    ref.camera.position.z = THREE.MathUtils.lerp(
+      mobile ? MOBILE_Z_START : DESKTOP_Z_START,
+      mobile ? MOBILE_Z_END   : DESKTOP_Z_END,
+      p
+    );
+    ref.camera.fov = THREE.MathUtils.lerp(
+      mobile ? MOBILE_FOV_START : DESKTOP_FOV_START,
+      mobile ? MOBILE_FOV_END   : DESKTOP_FOV_END,
+      p
+    );
+    ref.camera.updateProjectionMatrix();
 
-    // Wireframe brightens as we pass through
     const wire = ref.wireMesh;
     if (wire) {
       (wire.material as THREE.MeshBasicMaterial).opacity =
-        THREE.MathUtils.lerp(0.06, 0.45, Math.min(scrollProgress * 2.5, 1));
+        THREE.MathUtils.lerp(0.06, 0.45, Math.min(p * 2.5, 1));
     }
   }, [scrollProgress]);
 
@@ -203,34 +195,49 @@ const HeroSection = () => {
   useMotionValueEvent(scrollY, "change", (latest) => {
     const el = sectionRef.current;
     if (!el) return;
-    // Zoom phase = 2× viewport height
     const zoomRange = window.innerHeight * 2;
     const progress = Math.max(0, Math.min(1, (latest - el.offsetTop) / zoomRange));
     setScrollProgress(progress);
   });
 
-  // UI elements fade out as zoom starts
   const uiFade = Math.max(0, 1 - scrollProgress * 2.5);
 
   return (
-    // 300vh: sticky zoom for 200vh, then scroll continues naturally
     <div ref={sectionRef} style={{ height: "300vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden">
 
-        {/* ── Background — pure black matching --background ── */}
-        <div className="absolute inset-0 -z-10 bg-background">
-          {/* Scanlines — matching .scanlines component */}
-          <div
-            className="scanlines absolute inset-0"
-            style={{ position: "absolute", zIndex: 1 }}
-          />
+        {/* ── Background layers ── */}
+        <div className="absolute inset-0 -z-10">
+
+          {/* bg.mp4 must be in /public/bg.mp4 */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full"
+            style={{ objectFit: "cover" }}
+          >
+            <source src="/bg.mp4" type="video/mp4" />
+          </video>
+
+          {/* Mobile zoom override — scoped class to avoid global video side-effects */}
+          <style>{`
+            @media (max-width: 767px) {
+              .hero-bg-video { transform: scale(1.6) !important; transform-origin: center center; }
+            }
+          `}</style>
+
+          {/* Dark overlay */}
+          <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.55)", zIndex: 1 }} />
+          {/* Scanlines */}
+          <div className="scanlines absolute inset-0" style={{ zIndex: 2 }} />
           {/* Vignette */}
           <div
             className="absolute inset-0"
             style={{
-              background:
-                "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.85) 100%)",
-              zIndex: 2,
+              background: "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.85) 100%)",
+              zIndex: 3,
             }}
           />
         </div>
@@ -240,12 +247,11 @@ const HeroSection = () => {
           <ThreeDTitle scrollProgress={scrollProgress} />
         </div>
 
-        {/* ── HUD corners — accent colour ── */}
+        {/* ── HUD corners ── */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
           style={{ opacity: uiFade, transition: "opacity 0.08s linear" }}
         >
-          {/* Corners */}
           {[
             "top-6 left-6 border-l-2 border-t-2",
             "top-6 right-6 border-r-2 border-t-2",
@@ -258,8 +264,6 @@ const HeroSection = () => {
               style={{ borderColor: ACCENT_HEX, opacity: 0.55 }}
             />
           ))}
-
-          {/* Horizontal rule accents */}
           <div
             className="absolute top-0 left-0 right-0 h-px hidden md:block"
             style={{ background: `linear-gradient(to right, transparent, ${ACCENT_HEX}55, transparent)` }}
@@ -270,14 +274,10 @@ const HeroSection = () => {
           />
         </div>
 
-
         {/* ── Scroll indicator ── */}
         <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 pointer-events-none"
-          style={{
-            opacity: scrollProgress > 0.04 ? 0 : 0.7,
-            transition: "opacity 0.4s",
-          }}
+          style={{ opacity: scrollProgress > 0.04 ? 0 : 0.7, transition: "opacity 0.4s" }}
         >
           <span
             className="text-[9px] uppercase tracking-[0.4em]"
@@ -293,7 +293,7 @@ const HeroSection = () => {
           />
         </div>
 
-        {/* ── Zoom progress bar (accent) ── */}
+        {/* ── Zoom progress bar ── */}
         <div
           className="absolute bottom-0 left-0 h-[2px] z-40"
           style={{

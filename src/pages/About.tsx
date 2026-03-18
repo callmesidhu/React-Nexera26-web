@@ -3,6 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import groupPhoto2 from "@/assets/horizontalscroll/group_photo_2.jpg";
 
 const About = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ const About = () => {
               muted
               playsInline
               className="w-full h-full object-cover"
-              poster="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
+              poster={groupPhoto2}
             >
               <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4" type="video/mp4" />
             </video>

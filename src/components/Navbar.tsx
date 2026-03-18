@@ -47,7 +47,7 @@ const Navbar = () => {
             <motion.img
               src={logo}
               alt="NEXERA"
-              className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
+              className="h-16 w-16 transition-transform duration-300 group-hover:scale-110"
               whileHover={{ rotate: 180 }}
               transition={{ duration: 0.5 }}
             />

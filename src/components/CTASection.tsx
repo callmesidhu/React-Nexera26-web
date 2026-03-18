@@ -1,17 +1,48 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import autoshowVideo from "@/assets/Videos/autoshow_trim_vid_compress.mp4";
+import autoshowMobileVideo from "@/assets/Videos/autoshow_trim_mobile_compress.mp4";
 
 const CTASection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [desktopVideoError, setDesktopVideoError] = useState(false);
+  const [mobileVideoError, setMobileVideoError] = useState(false);
 
   return (
     <section ref={sectionRef} className="relative py-32 overflow-hidden">
+      {/* Background video (desktop only) */}
+      {!desktopVideoError && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover hidden md:block"
+          src={autoshowVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onError={() => setDesktopVideoError(true)}
+        />
+      )}
+
+      {!mobileVideoError && (
+        <video
+          className="absolute inset-0 w-full h-full object-cover md:hidden"
+          src={autoshowMobileVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onError={() => setMobileVideoError(true)}
+        />
+      )}
+
       {/* Background effect */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent" />
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/70 hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/45 to-black/30 md:hidden" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-accent/20" />
       </div>
 
@@ -28,7 +59,7 @@ const CTASection = () => {
           </span>
 
           {/* Main heading */}
-          <h2 className="text-5xl md:text-7xl lg:text-8xl font-display mb-8">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display mb-8 break-words">
             Join The <span className="text-accent">Revolution</span>
           </h2>
 
