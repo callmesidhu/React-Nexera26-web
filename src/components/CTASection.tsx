@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import autoshowVideo from "@/assets/Videos/autoshow_trim_vid.mp4";
-import autoshowMobileVideo from "@/assets/Videos/autoshow_trim_mobile.mp4";
+import autoshowVideo from "@/assets/Videos/autoshow_trim_vid_compress.mp4";
+import autoshowMobileVideo from "@/assets/Videos/autoshow_trim_mobile_compress.mp4";
 
 const CTASection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -40,8 +40,9 @@ const CTASection = () => {
 
       {/* Background effect */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/60 hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-accent/5 to-transparent md:hidden" />
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/60 to-black/70 hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/45 to-black/30 md:hidden" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-accent/20" />
       </div>
 
