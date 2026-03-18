@@ -10,15 +10,14 @@ const ACCENT_HEX   = "#ef4524";
 
 const isMobile = () => window.innerWidth < 768;
 
-// z=18: camera far back (small text) → z=-14 desktop / z=2 mobile (big text)
-const DESKTOP_Z_START =  -18;
-const DESKTOP_Z_END   = 10;
-const MOBILE_Z_START  =  -18;
-const MOBILE_Z_END    =   18;
+const DESKTOP_Z_START = -18;
+const DESKTOP_Z_END   =  10;
+const MOBILE_Z_START  = -18;
+const MOBILE_Z_END    =  18;
 
 const DESKTOP_FOV_START = 60;
 const DESKTOP_FOV_END   = 85;
-const MOBILE_FOV_START  = 75;   // wider start on mobile so text fits
+const MOBILE_FOV_START  = 75;
 const MOBILE_FOV_END    = 90;
 
 // ─── Three.js 3D Title ────────────────────────────────────────────────────────
@@ -45,7 +44,6 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
       0.1,
       2000
     );
-    // Start far back — text is small at page load
     camera.position.set(0, 0, mobile ? MOBILE_Z_START : DESKTOP_Z_START);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -131,10 +129,6 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
       particles.rotation.y = t * 0.02;
       particles.rotation.x = t * 0.007;
       glowLight.intensity = 2.5 + Math.sin(t * 1.8) * 0.6;
-      const mesh = sceneRef.current?.textMesh;
-      if (mesh) {
-        // static — no idle sway
-      }
       renderer.render(scene, camera);
     };
     loop();
@@ -156,14 +150,12 @@ const ThreeDTitle = ({ scrollProgress }: { scrollProgress: number }) => {
     };
   }, []);
 
-  // Scroll drives camera: p=0 → far back (small), p=1 → close (big)
   useEffect(() => {
     const ref = sceneRef.current;
     if (!ref) return;
     const mobile = isMobile();
     const p = Math.min(Math.max(scrollProgress, 0), 1);
 
-    // lerp(start, end, p): p=0 → start (far, small), p=1 → end (close, big)
     ref.camera.position.z = THREE.MathUtils.lerp(
       mobile ? MOBILE_Z_START : DESKTOP_Z_START,
       mobile ? MOBILE_Z_END   : DESKTOP_Z_END,
@@ -200,39 +192,23 @@ const HeroSection = () => {
     setScrollProgress(progress);
   });
 
-  const uiFade = Math.max(0, 1 - scrollProgress * 2.5);
+  const uiFade   = Math.max(0, 1 - scrollProgress * 2.5);
+  const textFade = Math.max(0, (scrollProgress - 0.8) / 0.2);
 
   return (
     <div ref={sectionRef} style={{ height: "300vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden">
 
-        {/* ── Background layers ── */}
+        {/* ── Background ── */}
         <div className="absolute inset-0 -z-10">
-
-          {/* bg.mp4 must be in /public/bg.mp4 */}
           <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full"
-            style={{ objectFit: "cover" }}
+            autoPlay loop muted playsInline
+            className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/bg.mp4" type="video/mp4" />
           </video>
-
-          {/* Mobile zoom override — scoped class to avoid global video side-effects */}
-          <style>{`
-            @media (max-width: 767px) {
-              .hero-bg-video { transform: scale(1.6) !important; transform-origin: center center; }
-            }
-          `}</style>
-
-          {/* Dark overlay */}
           <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.55)", zIndex: 1 }} />
-          {/* Scanlines */}
           <div className="scanlines absolute inset-0" style={{ zIndex: 2 }} />
-          {/* Vignette */}
           <div
             className="absolute inset-0"
             style={{
@@ -242,9 +218,47 @@ const HeroSection = () => {
           />
         </div>
 
-        {/* ── 3D Title ── */}
+        {/* ── 3D canvas ── */}
         <div className="absolute inset-0 z-10">
           <ThreeDTitle scrollProgress={scrollProgress} />
+        </div>
+
+        {/* ── Top text ── */}
+        <div
+          className="absolute inset-x-0 top-64 z-20 flex justify-center px-4"
+          style={{
+            opacity: textFade,
+            transform: `translateY(${(1 - textFade) * -16}px)`,
+            pointerEvents: textFade > 0 ? "auto" : "none",
+          }}
+        >
+          <span
+            className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-center"
+            style={{ color: ACCENT_HEX, fontFamily: "'Rajdhani', sans-serif" }}
+          >
+            Industrial Engineering Technical Fest
+          </span>
+        </div>
+
+        {/* ── Bottom text ── */}
+        <div
+          className="absolute inset-x-0 bottom-56 z-20 flex flex-col items-center gap-3 px-6"
+          style={{
+            opacity: textFade,
+            transform: `translateY(${(1 - textFade) * 16}px)`,
+            pointerEvents: textFade > 0 ? "auto" : "none",
+          }}
+        >
+          <p
+            className="text-sm md:text-xl text-center max-w-xl"
+            style={{
+              color: "rgba(255,255,255,0.65)",
+              fontFamily: "'Inter', sans-serif",
+              lineHeight: 1.6,
+            }}
+          >
+            Engineering the Future. One Innovation at a Time.
+          </p>
         </div>
 
         {/* ── HUD corners ── */}
@@ -280,8 +294,8 @@ const HeroSection = () => {
           style={{ opacity: scrollProgress > 0.04 ? 0 : 0.7, transition: "opacity 0.4s" }}
         >
           <span
-            className="text-[9px] uppercase tracking-[0.4em]"
-            style={{ color: ACCENT_HEX, fontFamily: "Rajdhani, sans-serif" }}
+            className="text-[15px] font-bold uppercase tracking-[0.4em]"
+            style={{ color: ACCENT_HEX, fontFamily: "Rajdhani, sans-serif"}}
           >
             Scroll
           </span>
