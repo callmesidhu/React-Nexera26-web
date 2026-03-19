@@ -36,7 +36,7 @@ const HeroSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const title = "NEXERA";
+  const title = "NEXERA?";
 
   return (
     <section
@@ -89,25 +89,33 @@ const HeroSection = () => {
           </span>
         </motion.div>
 
+        <div className="w-fit mx-auto text-left">
           <h1
             ref={titleRef}
             className="font-display text-4xl sm:text-6xl md:text-9xl lg:text-[12rem] font-black leading-none mb-6 overflow-hidden whitespace-nowrap"
           >
-          {title.split("").map((letter, index) => (
-            <span key={index} className="hero-letter inline-block">
-              {letter}
-            </span>
-          ))}
-        </h1>
+            {title.split("").map((letter, index) => (
+              <span key={index} className="hero-letter inline-block">
+                {letter}
+              </span>
+            ))}
+          </h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12 font-body"
-        >
-          Engineering the Future. One Innovation at a Time.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            className="text-muted-foreground text-lg md:text-xl mb-12 font-body leading-relaxed space-y-2"
+          >
+            <span className="block">
+              What is <span className="text-accent">NEXERA</span>?
+            </span>
+            <span className="block">Is there a department called Industrial?</span>
+            <span className="block">
+              Scroll down to discover what <span className="text-accent">Nexera</span> was, and what <span className="text-accent">Nexera</span> has become.
+            </span>
+          </motion.p>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -115,11 +123,8 @@ const HeroSection = () => {
           transition={{ delay: 1.5, duration: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Link to="/programs" className="btn-primary">
-            Explore Programs
-          </Link>
-          <Link to="/programs" className="btn-tactical">
-            <span>Register Now</span>
+          <Link to="/about" className="btn-tactical">
+            About Us
           </Link>
         </motion.div>
 
