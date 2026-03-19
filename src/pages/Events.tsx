@@ -19,7 +19,6 @@ interface EventType {
   capacity: string;
   image: string;
   link: string;
-  parsedDate: Date;
 }
 
 interface RawEventData {
@@ -36,45 +35,26 @@ const Events = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const isHeaderInView = useInView(headerRef, { once: true });
 
-  // ✅ Robust Date Parser
-  const parseDate = (dateStr: string): Date => {
-    if (!dateStr) return new Date();
-
-    // YYYY-MM-DD
-    if (dateStr.includes("-")) {
-      return new Date(dateStr);
-    }
-
-    // DD/MM/YYYY
-    if (dateStr.includes("/")) {
-      const [day, month, year] = dateStr.split("/");
-      return new Date(`${year}-${month}-${day}`);
-    }
-
-    return new Date(dateStr);
-  };
-
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(import.meta.env.VITE_EVENTS_URL);
-
+        
         if (!res.ok) {
           throw new Error("Failed to fetch events data.");
         }
-
+        
         const text = await res.text();
 
         Papa.parse<RawEventData>(text, {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            const today = new Date();
-
-            const formatted: EventType[] = result.data.map((item) => {
-              let rawLink =
-                item.link || item.Link || item.LINK || item.url || "";
-
+            const formatted = result.data.map((item) => {
+              // Smart Link Logic
+              let rawLink = item.link || item.Link || item.LINK || item.url || "";
+              
+              // Only add https if there is actually a link text
               if (rawLink && rawLink !== "#" && !rawLink.startsWith("http")) {
                 rawLink = `https://${rawLink}`;
               }
@@ -90,43 +70,21 @@ const Events = () => {
                 capacity: item.capacity,
                 image: item.image,
                 link: rawLink,
-                parsedDate: parseDate(item.date),
               };
             });
-
-            // ✅ Smart Sorting
-            const sorted = formatted.sort((a, b) => {
-              const aTime = a.parsedDate.getTime();
-              const bTime = b.parsedDate.getTime();
-              const todayTime = today.getTime();
-
-              const aIsPast = aTime < todayTime;
-              const bIsPast = bTime < todayTime;
-
-              // Future first
-              if (aIsPast !== bIsPast) {
-                return aIsPast ? 1 : -1;
-              }
-
-              // Both future → nearest first
-              if (!aIsPast && !bIsPast) {
-                return aTime - bTime;
-              }
-
-              // Both past → most recent first
-              return bTime - aTime;
-            });
-
-            setEvents(sorted);
+            
+            console.log("Events Loaded:", formatted);
+            setEvents(formatted);
             setLoading(false);
           },
           error: (err: any) => {
             setError(err.message || "Error parsing events data.");
             setLoading(false);
-          },
+          }
         });
       } catch (err: any) {
-        setError(err.message || "An unexpected error occurred.");
+        console.error("Events fetch error:", err);
+        setError(err.message || "An unexpected error occurred while loading events.");
         setLoading(false);
       }
     };
@@ -136,11 +94,10 @@ const Events = () => {
 
   const filteredEvents = useMemo(() => {
     const query = searchQuery.toLowerCase();
-    return events.filter(
-      (event) =>
-        event.title?.toLowerCase().includes(query) ||
-        event.description?.toLowerCase().includes(query) ||
-        event.venue?.toLowerCase().includes(query)
+    return events.filter((event) =>
+      event.title?.toLowerCase().includes(query) ||
+      event.description?.toLowerCase().includes(query) ||
+      event.venue?.toLowerCase().includes(query)
     );
   }, [events, searchQuery]);
 
@@ -186,19 +143,30 @@ const Events = () => {
               placeholder="Search by name, location, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-card/50 border border-border pl-12 pr-4 py-4 rounded-md"
+              className="w-full bg-card/50 border border-border pl-12 pr-4 py-4 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors rounded-md"
             />
           </div>
 
-          {/* States */}
-          {loading && <div className="text-center py-20">Loading events...</div>}
-          {error && <div className="text-center py-20 text-red-500">{error}</div>}
-
-          {!loading && !error && filteredEvents.length === 0 && (
-            <div className="text-center py-20">No events found</div>
+          {/* Status Displays */}
+          {loading && (
+            <div className="text-center py-20 text-muted-foreground">
+              Loading events...
+            </div>
           )}
 
-          {/* Grid */}
+          {error && (
+            <div className="text-center py-20 text-destructive font-semibold">
+              {error}
+            </div>
+          )}
+
+          {!loading && !error && filteredEvents.length === 0 && (
+            <div className="text-center py-20 text-muted-foreground">
+              No events found matching your search.
+            </div>
+          )}
+
+          {/* Event Grid */}
           {!loading && !error && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredEvents.map((event) => (
@@ -208,32 +176,44 @@ const Events = () => {
                   onKeyDown={(e) => handleKeyDown(e, event)}
                   role="button"
                   tabIndex={0}
-                  className="group cursor-pointer bg-card/30 overflow-hidden rounded-lg flex flex-col"
+                  aria-label={`View details for ${event.title}`}
+                  className="group cursor-pointer hud-border hud-glow bg-card/30 overflow-hidden focus:outline-none focus:ring-2 focus:ring-accent rounded-lg flex flex-col h-full"
                 >
-                  {/* 3:2 Image */}
-                  <div className="relative aspect-[3/2] overflow-hidden">
+                  <div className="relative h-48 overflow-hidden shrink-0">
                     <img
                       src={event.image}
                       alt={event.title}
-                      className="w-full h-full object-contain transition"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
                     />
                   </div>
 
                   <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-xl mb-2">{event.title}</h3>
-
+                    <h3 className="font-display text-xl mb-2 group-hover:text-accent transition-colors">
+                      {event.title}
+                    </h3>
+                    
                     <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
                       {event.description}
                     </p>
 
-                    <div className="text-xs mb-4">
-                      <div>{event.date} • {event.time}</div>
-                      <div>{event.venue}</div>
+                    <div className="space-y-2 text-xs text-muted-foreground mb-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-3 h-3 text-accent" />
+                        <span>{event.date} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3 h-3 text-accent" />
+                        <span>{event.venue}</span>
+                      </div>
                     </div>
 
-                    <button className="text-accent flex items-center gap-2">
-                      View Details <ArrowRight className="w-4 h-4" />
-                    </button>
+                    {/* View Details Button */}
+                    <div className="pt-4 border-t border-border mt-auto">
+                      <button className="text-accent text-sm font-display tracking-wide uppercase flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
+                        View Details <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -242,14 +222,15 @@ const Events = () => {
         </div>
       </main>
 
+      {/* Modal */}
       <AnimatePresence>
         {selectedEvent && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90 backdrop-blur-sm"
             onClick={() => setSelectedEvent(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90 backdrop-blur-sm"
             role="dialog"
             aria-modal="true"
           >
@@ -269,35 +250,60 @@ const Events = () => {
                 <X className="w-5 h-5 text-white" />
               </button>
 
-              {/* Uncropped Full-size Image Container */}
-              <div className="relative w-full flex justify-center bg-zinc-950 p-4 shrink-0 border-b border-white/5">
+              {/* Hero Image Section */}
+              <div className="shrink-0 relative h-80 w-full">
                 <img
                   src={selectedEvent.image}
                   alt={selectedEvent.title}
-                  className="max-w-full max-h-[55vh] object-contain rounded-sm"
+                  className="w-full h-full object-cover"
                 />
-              </div>
-
-              <div className="p-8 overflow-y-auto flex-grow bg-black">
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-wider mb-4 drop-shadow-lg">
-                  {selectedEvent.title}
-                </h2>
                 
-                <div className="flex flex-wrap items-center gap-6 text-sm md:text-base font-medium text-accent/90 mb-6">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    <span>{selectedEvent.date} • {selectedEvent.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="w-5 h-5" />
-                    <span>{selectedEvent.venue}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+                <div className="absolute bottom-0 left-0 w-full p-8">
+                  <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-wider mb-4 drop-shadow-lg">
+                    {selectedEvent.title}
+                  </h2>
+                  
+                  <div className="flex flex-wrap items-center gap-6 text-sm md:text-base font-medium text-accent/90">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5" />
+                      <span>{selectedEvent.date} • {selectedEvent.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                       <MapPin className="w-5 h-5" />
+                       <span>{selectedEvent.venue}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-5 h-5" />
+                      <span>Capacity: {selectedEvent.capacity}</span>
+                    </div>
                   </div>
                 </div>
+              </div>
 
+              {/* Content Body */}
+              <div className="p-8 overflow-y-auto flex-grow bg-black">
                 <div className="text-gray-300 leading-relaxed text-lg mb-8 max-w-3xl">
                   {selectedEvent.fullDescription || selectedEvent.description}
                 </div>
+
+                {/* 🔹 REGISTER LINK (Only renders if link exists) */}
+                {selectedEvent.link && selectedEvent.link !== "#" && (
+                  <div className="mt-auto pt-4">
+                    <a 
+                      href={selectedEvent.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block relative bg-accent text-white font-display font-bold uppercase tracking-widest text-lg px-10 py-4 hover:bg-accent/80 transition-all duration-300 text-center"
+                      style={{ clipPath: "polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%)" }}
+                    >
+                      Register Now
+                    </a>
+                  </div>
+                )}
               </div>
+
             </motion.div>
           </motion.div>
         )}
