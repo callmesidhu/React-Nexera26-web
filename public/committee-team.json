@@ -8,7 +8,7 @@
 
   { "id": 5, "name": "Aadhil Mubarak", "role": "Treasurer", "image": "https://i.pravatar.cc/400?img=5" },
 
-  { "id": 6, "name": "Kevin Sunny", "role": "Co-ordinator", "image": "https://i.pravatar.cc/400?img=6" },
+  { "id": 6, "name": "Kevin Sunny", "role": "Fest Co-ordinator", "image": "https://i.pravatar.cc/400?img=6" },
 
   { "id": 7, "name": "Joel", "role": "Program coordinator", "image": "https://i.pravatar.cc/400?img=7" },
   { "id": 8, "name": "Nandikesh", "role": "Program coordinator", "image": "https://i.pravatar.cc/400?img=8" },
@@ -20,12 +20,12 @@
   { "id": 12, "name": "Nitha", "role": "Documentation", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850389/Nitha_Sharin___documentation__buc064.jpg" },
 
   { "id": 13, "name": "Keerthana", "role": "Program Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850358/Keerthana_pfe5pt.jpg" },
-  { "id": 14, "name": "Arundati", "role": "Program Head", "image": "https://i.pravatar.cc/400?img=14" },
+  { "id": 14, "name": "Arundhathi", "role": "Program Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773945260/Arundhathi_S_Nair_A_C_Program_a54zap.jpg" },
 
   { "id": 15, "name": "Abhinav B K", "role": "Stage Head", "image": "https://i.pravatar.cc/400?img=15" },
   { "id": 16, "name": "Jobin", "role": "Stage Head", "image": "https://i.pravatar.cc/400?img=16" },
 
-  { "id": 17, "name": "Ananthlakshmi", "role": "PR Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850351/Anantha_Lakshmi_yy99m4.jpg" },
+  { "id": 17, "name": "Anantha Lakshmi", "role": "PR Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850351/Anantha_Lakshmi_yy99m4.jpg" },
 
   { "id": 18, "name": "S Sidharth", "role": "Web Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850383/S_SIDHARTH_WEB_HEAD_j0oxjc.jpg" },
 
@@ -33,28 +33,34 @@
 
   { "id": 20, "name": "Akshaya", "role": "Design Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850387/Akshaya_T_S_Design_ppnui9.jpg" },
 
-  { "id": 21, "name": "Adith Madhav", "role": "Content Head", "image": "https://i.pravatar.cc/400?img=21" },
+  { "id": 21, "name": "Adith ", "role": "Content Head", "image": "https://i.pravatar.cc/400?img=21" },
   { "id": 22, "name": "Amritha", "role": "Content Head", "image": "https://i.pravatar.cc/400?img=22" },
 
-  { "id": 25, "name": "Anchitha", "role": "Logistics Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850364/Anchitha_Balamurali_Logistics__ou5anm.jpg" },
-  { "id": 26, "name": "Meenakshi", "role": "Logistics Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850363/Meenakshi_P_Logistics__i9tkxq.jpg" },
+  { "id": 23, "name": "Anchitha", "role": "Logistics Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850364/Anchitha_Balamurali_Logistics__ou5anm.jpg" },
+  { "id": 24, "name": "Meenakshi", "role": "Logistics Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850363/Meenakshi_P_Logistics__i9tkxq.jpg" },
 
-  { "id": 27, "name": "Goutham", "role": "Culturals Head", "image": "https://i.pravatar.cc/400?img=27" },
-  { "id": 28, "name": "Nanda", "role": "Culturals Head", "image": "https://i.pravatar.cc/400?img=28" },
+  { "id": 25, "name": "Goutham", "role": "Culturals Head", "image": "https://i.pravatar.cc/400?img=27" },
+  { "id": 26, "name": "Nandana", "role": "Culturals Head", "image": "https://i.pravatar.cc/400?img=28" },
 
-  { "id": 29, "name": "Jineesh", "role": "Technical Head", "image": "https://i.pravatar.cc/400?img=29" },
-  { "id": 30, "name": "Shuhaib", "role": "Technical Head", "image": "https://i.pravatar.cc/400?img=30" },
+  { "id": 27, "name": "Jineesh", "role": "Technical Head", "image": "https://i.pravatar.cc/400?img=29" },
+  { "id": 28, "name": "Shuhaib", "role": "Technical Head", "image": "https://i.pravatar.cc/400?img=30" },
 
-  { "id": 31, "name": "Aswin M D", "role": "Marketing Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850360/Aswin_MD_-_Marketing__ovlgc6.jpg" },
+  { "id": 29, "name": "Aswin M D", "role": "Marketing Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850360/Aswin_MD_-_Marketing__ovlgc6.jpg" },
 
-  { "id": 32, "name": "Layana", "role": "Stalls Head", "image": "https://i.pravatar.cc/400?img=32" },
-  { "id": 33, "name": "Madhu", "role": "Stalls Head", "image": "https://i.pravatar.cc/400?img=33" },
+  { "id": 30, "name": "Layana", "role": "Stalls Head", "image": "https://i.pravatar.cc/400?img=32" },
+  { "id": 31, "name": "Madhu", "role": "Stalls Head", "image": "https://i.pravatar.cc/400?img=33" },
 
-  { "id": 34, "name": "Rayyan Khan", "role": "Hospitality", "image": "https://i.pravatar.cc/400?img=34" },
+  { "id": 32, "name": "Rayyan Khan", "role": "Hospitality", "image": "https://i.pravatar.cc/400?img=34" },
 
-  { "id": 35, "name": "Fayas", "role": "Informals", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850365/Fayas_jxqifg.jpg" },
-  { "id": 36, "name": "Kifah", "role": "Informals", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850367/Kifah_Pullissery_informal__e5ymvy.jpg" },
+  { "id": 33, "name": "Fayas", "role": "Informals", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850365/Fayas_jxqifg.jpg" },
+  { "id": 34, "name": "Kifah", "role": "Informals", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850367/Kifah_Pullissery_informal__e5ymvy.jpg" },
 
-  { "id": 37, "name": "Ashwin Suresh", "role": "Discipline", "image": "https://i.pravatar.cc/400?img=37" },
-  { "id": 38, "name": "Goutham", "role": "Discipline", "image": "https://i.pravatar.cc/400?img=38" }
+  { "id": 35, "name": "Ashwin Suresh", "role": "Discipline", "image": "https://i.pravatar.cc/400?img=37" },
+  { "id": 36, "name": "Goutham", "role": "Discipline", "image": "https://i.pravatar.cc/400?img=38" },
+ 
+ { "id": 37, "name": "Rahan", "role": "Sponsership Head", "image": "https://i.pravatar.cc/400?img=38" },
+ { "id": 38, "name": "Sreekesh", "role": "Sponsership Head", "image": "https://i.pravatar.cc/400?img=38" },
+ { "id": 39, "name": "Nikitha", "role": "Sponsership Head", "image": "https://i.pravatar.cc/400?img=38" }
+
 ]
+ 
