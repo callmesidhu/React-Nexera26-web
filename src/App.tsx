@@ -26,12 +26,15 @@ gsap.registerPlugin(ScrollTrigger);
 --------------------------------------- */
 
 const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+    (window as typeof window & { lenis?: Lenis }).lenis = lenis;
 
     // Sync Lenis scroll with ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -64,10 +67,23 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     ScrollTrigger.refresh();
 
     return () => {
+      delete (window as typeof window & { lenis?: Lenis }).lenis;
       lenis.destroy();
       ScrollTrigger.killAll();
     };
   }, []);
+
+  useEffect(() => {
+    // Keep route navigation consistent by forcing top position in both native and Lenis scroll states.
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const raf = requestAnimationFrame(() => {
+      const lenisScroller = (window as typeof window & { lenis?: Lenis }).lenis;
+      lenisScroller?.scrollTo(0, { immediate: true, force: true });
+      ScrollTrigger.refresh();
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [location.key]);
 
   return <>{children}</>;
 };
@@ -78,10 +94,6 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
