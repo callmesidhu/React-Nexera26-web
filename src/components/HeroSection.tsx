@@ -1,12 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import ThreeScene from "./ThreeScene";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtextRef = useRef<HTMLParagraphElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -31,6 +35,26 @@ const HeroSection = () => {
           delay: 0.5,
         }
       );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      if (subtextRef.current) {
+        gsap.to(".hero-subtext-letter", {
+          opacity: 1,
+          stagger: 0.015,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: subtextRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -90,20 +114,62 @@ const HeroSection = () => {
             ))}
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
+          <div 
+            ref={subtextRef}
             className="text-muted-foreground text-lg md:text-xl mb-12 font-body leading-relaxed space-y-2 text-left"
           >
             <span className="block">
-              What is <span className="text-accent">NEXERA</span>?
+              {`What is `.split("").map((char, idx) => (
+                <span key={`w-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
+              <span className="text-accent">
+                {'NEXERA'.split("").map((char, idx) => (
+                  <span key={`nexera1-${idx}`} className="hero-subtext-letter inline-block opacity-0">{char}</span>
+                ))}
+              </span>
+              {'?'.split("").map((char, idx) => (
+                <span key={`q1-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
             </span>
-            <span className="block">Is there a department called Industrial?</span>
             <span className="block">
-              Scroll down to discover what <span className="text-accent">Nexera</span> was, and what <span className="text-accent">Nexera</span> is now.
+              {`Is there a department called Industrial?`.split("").map((char, idx) => (
+                <span key={`dept-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
             </span>
-          </motion.p>
+            <span className="block">
+              {`Scroll down to discover what `.split("").map((char, idx) => (
+                <span key={`scroll-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
+              <span className="text-accent">
+                {'Nexera'.split("").map((char, idx) => (
+                  <span key={`nexera2-${idx}`} className="hero-subtext-letter inline-block opacity-0">{char}</span>
+                ))}
+              </span>
+              {` was, and what `.split("").map((char, idx) => (
+                <span key={`was-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
+              <span className="text-accent">
+                {'Nexera'.split("").map((char, idx) => (
+                  <span key={`nexera3-${idx}`} className="hero-subtext-letter inline-block opacity-0">{char}</span>
+                ))}
+              </span>
+              {` is now.`.split("").map((char, idx) => (
+                <span key={`now-${idx}`} className="hero-subtext-letter inline-block opacity-0" style={{ display: char === " " ? "inline" : "inline-block" }}>
+                  {char}
+                </span>
+              ))}
+            </span>
+          </div>
         </div>
 
         <motion.div
