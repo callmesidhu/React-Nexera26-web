@@ -13,8 +13,8 @@ const contacts = [
 ];
 
 const socials = [
-  { name: "Instagram", icon: Instagram, handle: "@nexera.fest", url: "https://www.instagram.com/nexera.cet/?hl=ent" },
-  { name: "LinkedIn", icon: Linkedin, handle: "NEXERA Official", url: "https://www.linkedin.com/company/nexera-official" },
+  { name: "Instagram", icon: Instagram, handle: "@nexera.cet", url: "https://www.instagram.com/nexera.cet/?hl=ent" },
+  { name: "LinkedIn", icon: Linkedin, handle: "NEXERA Official", url: "https://www.linkedin.com/company/nexeracet/" },
 ];
 
 const Contact = () => {

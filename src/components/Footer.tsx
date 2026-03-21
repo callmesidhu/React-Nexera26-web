@@ -19,13 +19,13 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               <a 
-                href="https://www.instagram.com/nexera.fest" 
+                href="https://www.instagram.com/nexera.cet" 
                 className="w-10 h-10 border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a 
-                href="https://www.linkedin.com/company/nexera-official" 
+                href="https://www.linkedin.com/company/nexeracet" 
                 className="w-10 h-10 border border-border flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
