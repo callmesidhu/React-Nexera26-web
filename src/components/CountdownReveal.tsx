@@ -13,7 +13,7 @@ export default function CountdownReveal() {
     // Set target date to March 23rd, 9:00 AM of the current year
     const currentYear = new Date().getFullYear();
     // Format: YYYY-MM-DDTHH:MM:SS (24-hour time)
-    const targetDate = new Date(`${currentYear}-03-23T05:00:00`);
+    const targetDate = new Date(`${currentYear}-03-24T09:00:00`);
 
     const interval = setInterval(() => {
       const now = new Date();
