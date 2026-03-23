@@ -24,13 +24,13 @@
 
   { "id": 13, "name": "Keerthana", "role": "Program Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850358/Keerthana_pfe5pt.jpg" },
   { "id": 14, "name": "Arundhathi", "role": "Program Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773945260/Arundhathi_S_Nair_A_C_Program_a54zap.jpg" },
+  { "id": 17, "name": "Anantha Lakshmi", "role": "PR Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850351/Anantha_Lakshmi_yy99m4.jpg" },
+
+  { "id": 18, "name": "S Sidharth", "role": "Web Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850383/S_SIDHARTH_WEB_HEAD_j0oxjc.jpg" },
 
   { "id": 15, "name": "Abhinav B K", "role": "Stage Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
   { "id": 16, "name": "Jobin", "role": "Stage Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774085028/Screenshot_2026-03-21_144914_w2ladf.png" },
 
-  { "id": 17, "name": "Anantha Lakshmi", "role": "PR Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850351/Anantha_Lakshmi_yy99m4.jpg" },
-
-  { "id": 18, "name": "S Sidharth", "role": "Web Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1773850383/S_SIDHARTH_WEB_HEAD_j0oxjc.jpg" },
 
   { "id": 19, "name": "Viswa", "role": "Media Head", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
 
