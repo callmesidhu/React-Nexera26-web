@@ -1,14 +1,17 @@
 
- [ { "id": 1, "name": "Abhinand", "role": "Convenor", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
-
-  { "id": 2, "name": "Akash", "role": "Convenor", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
-
-  { "id": 3, "name": "Devanand", "role": "Co-convenor", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
-  { "id": 4, "name": "Sreesharan", "role": "Co-convenor", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+ [
+    { "id": 2, "name": "Akash Regi", "role": "Convenor", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
 
   { "id": 5, "name": "Aadhil Mubarak", "role": "Treasurer", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
 
-  { "id": 6, "name": "Kevin Sunny", "role": "Fest Co-ordinator", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 1, "name": "Aarsha Krishnan", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 40, "name": "Arjun A", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 41, "name": "Kevin Sunny", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 42, "name": "Abhinand C", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 43, "name": "Sreesharan S", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+  { "id": 44, "name": "Devanand Joshy", "role": "Executive Committee ", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084177/WhatsApp_Image_2026-03-21_at_14.33.50_kbwh5o.jpg" },
+
+
 
   { "id": 7, "name": "Joel", "role": "Program coordinator", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774084995/Joel_Varughees_Jacob_program_coordinator_v7n47m.jpg" },
   { "id": 8, "name": "Nandikesh", "role": "Program coordinator", "image": "https://res.cloudinary.com/dzssno53o/image/upload/v1774085030/Screenshot_2026-03-21_145329_wskpww.png" },
